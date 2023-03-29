@@ -1,7 +1,9 @@
-asgiref==3.6.0
-Django==4.1.7
 django-crispy-forms==2.0
 environs==9.5.0
+pip-chill==1.0.1
+pre-commit==3.2.1
+asgiref==3.6.0
+Django==4.1.7
 marshmallow==3.19.0
 packaging==23.0
 python-dotenv==1.0.0
