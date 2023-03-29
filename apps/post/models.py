@@ -1,6 +1,9 @@
 from django.db import models
 
-class Post(models.Model):
+from apps.common.models import Base
+
+
+class Post(Base):
 
 
     class Meta:
