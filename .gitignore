@@ -8,6 +8,12 @@ __pycache__/
 .idea/
 # Distribution / packaging
 .Python
+
+media/
+
+apps/post/migrations
+apps/message/migrations
+apps/user/migrations
 build/
 develop-eggs/
 dist/

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create Post</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+		}
+
+		body {
+			background-color: #fafafa;
+		}
+
+		form {
+			background-color: #fff;
+			max-width: 500px;
+			margin: 20px auto;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		input[type="file"] {
+			display: block;
+			margin-bottom: 20px;
+		}
+
+		input[type="submit"] {
+			background-color: #3897f0;
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #3366cc;
+		}
+	</style>
+</head>
+<body>
+	<form action="{% url 'post_create' %}" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<h1>Create Post</h1>
+		<label for="caption">Caption:</label>
+		<input type="text" name="body" id="caption" required>
+		<label for="image">Image:</label>
+		<input type="file" name="image" id="image" accept="image/*" required>
+		<input type="submit" value="Post">
+	</form>
+</body>
+</html>
