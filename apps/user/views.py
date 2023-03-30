@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserLoginForm
 
 # Create your views here.
 
@@ -16,8 +16,9 @@ class SignUpView(CreateView):
 
 
 class CustomLoginView(LoginView):
+    form_class = UserLoginForm
     template_name = 'registration/login.html'
-    fields = '__all__'
+    success_url = reverse_lazy('home')
 
 
 
