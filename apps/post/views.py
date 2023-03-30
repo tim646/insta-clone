@@ -10,8 +10,8 @@ class PostCreateView(CreateView):
     template_name = 'post_create.html'
     success_url = 'posts'
 
-#
+
 class PostListView(ListView):
     model = Post
     context_object_name = 'posts'
-    template_mame = 'index.html'
+    template_mame = 'post/post_list.html'

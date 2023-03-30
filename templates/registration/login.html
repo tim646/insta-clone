@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 <title>Login</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <span id="root">
@@ -19,19 +20,18 @@
                     <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" alt="Instagram">
                   </div><!-- Header end -->
                   <div class="form-wrap">
-                    <form class="form">
+                    <form class="form" method="POST"> {% csrf_token %}
   
                       <div class="input-box">
-                        <input type="text" id="name" aria-describedby="" placeholder="Phone number, username, or email" aria-required="true" maxlength="30" autocapitalize="off" autocorrect="off" name="username" value="" required>
+                        {{form.as_p}}
                       </div>  
-  
-                      <div class="input-box">
-                        <input type="password" name="password" id="password" placeholder="Password" aria-describedby="" maxlength="30" aria-required="true" autocapitalize="off" autocorrect="off" required>
-                      </div>  
-  
+
+
+
+
                       <span class="button-box">
                         <button class="btn" type="submit" name="submit">Log in</button>
-                      </span>  
+                      </span>
   
                       <a class="forgot" href="">Forgot password?</a>
                     </form>
@@ -39,7 +39,7 @@
                 </div> <!-- Login-box end -->
   
                 <div class="login-box">
-                  <p class="text">Don't have an account?<a href="#">Sign up</a></p>
+                  <p class="text">Don't have an account?<a href="{% url 'register' %}">Sign up</a></p>
                 </div> <!-- Signup-box end -->
   
                 <div class="app">
