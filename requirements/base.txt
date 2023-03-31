@@ -9,7 +9,7 @@ packaging==23.0
 python-dotenv==1.0.0
 sqlparse==0.4.3
 tzdata==2023.2
-Pillow-9.4.0
-django-recaptcha-3.0.0
+Pillow==9.4.0
+django-recaptcha==3.0.0
 
 
