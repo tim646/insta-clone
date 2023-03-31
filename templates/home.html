@@ -1,0 +1,54 @@
+{% extends 'post/base.html' %}
+{% block content %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Instagram</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse align-middle " id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2  " type="search" placeholder="Search" aria-label="Search">
+                </form>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-search"></i>
+                        Explore
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fxzsgggggfeeeea fa-plus-square"></i>
+                        Add Post
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-heart"></i>
+                        Notifications
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-user"></i>
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% for post in posts %}
+
+
+    {% endfor %}
+
+    <p>Hello {{ user.username }}! </p>
+    <br>
+    <hr>
+    <a class="btn btn-outline-danger btn-sm align-middle " role="button" href="{% url 'logout' %}"> logout</a>
+    <br>
+
+
+
+{% endblock %}

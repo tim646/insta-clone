@@ -6,6 +6,7 @@ from apps.post.choices import NotoificationChoice
 from apps.post.utils import post_upload_path
 
 
+
 class Post(Base):
     author = ForeignKey('user.User', on_delete=CASCADE, related_name="posts", default=1)
     body = TextField(null=True, blank=True)
@@ -22,7 +23,7 @@ class Post(Base):
 class Like(Model):
     user = ForeignKey('user.User', on_delete=CASCADE)
     created = DateTimeField(auto_now=True)
-    post = ForeignKey('Post', on_delete=CASCADE, related_query_name='likes')
+    post = ForeignKey('Post', on_delete=CASCADE, related_name='likes')
 
     class Meta:
         db_table = "likes"
