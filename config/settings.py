@@ -1,4 +1,3 @@
-
 # For more information on this file, see
 # https://docs.djangoproject.com/en/4.1/topics/settings/
 
@@ -46,7 +45,8 @@ LOCAL_APPS = [
     'apps.user',
     'apps.post',
     'apps.common',
-    'apps.message'
+    'apps.directs',
+
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
