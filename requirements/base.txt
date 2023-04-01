@@ -12,6 +12,7 @@ tzdata==2023.2
 Pillow==9.4.0
 django-recaptcha==3.0.0
 django-allauth==0.53.1
+django-extensions==3.2.1
 
 
 
