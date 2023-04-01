@@ -6,23 +6,31 @@ from apps.post.choices import NotoificationChoice
 from apps.post.utils import post_upload_path
 
 
-class Post(Base):
-    author = ForeignKey('user.User', on_delete=CASCADE, related_name="posts", default=1)
-    body = TextField(null=True, blank=True)
-    file = FileField(upload_to=post_upload_path, null=False, blank=False)
 
+class Post(Base):
+    author = ForeignKey('user.User', on_delete=CASCADE, related_name="posts")
+    title = CharField( max_length=128, null=True, blank=True)
     class Meta:
         db_table = "posts"
 
     @property
-    def likes(self):
+    def like_count(self):
         return Like.objects.filter(post_id=self.id).count()
+
+    @property
+    def comments(self):
+        return Comment.objects.filter(post_id=self.id)
+
+
+class PostMedia(Model):
+    file = FileField(upload_to=post_upload_path, null=False, blank=False)
+    post = ForeignKey('post.Post', on_delete=CASCADE, related_name="post_medias")
 
 
 class Like(Model):
     user = ForeignKey('user.User', on_delete=CASCADE)
     created = DateTimeField(auto_now=True)
-    post = ForeignKey('Post', on_delete=CASCADE, related_query_name='likes')
+    post = ForeignKey('Post', on_delete=CASCADE, related_name='likes')
 
     class Meta:
         db_table = "likes"

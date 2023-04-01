@@ -9,7 +9,7 @@
 <body>
     <span id="root">
       <section class="section-all">
-  
+  {% load socialaccount %}
         <!-- 1-Role Main -->
         <main class="main" role="main">
           <div class="wrapper">
@@ -18,11 +18,18 @@
                 <div class="login-box">
                   <div class="header">
                     <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" alt="Instagram">
-                    <a href="#" class="google btn">
+                    <a href="{% provider_login_url 'google' %}"class="google btn">
                         <i class="fa fa-google fa-fw"></i> Login with Google
                       </a>
                   </div><!-- Header end -->
-                  
+
+                 {% if messages %}
+                    <ul class="messages">
+                      {% for message in messages %}
+                        <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
                     
                   
                   <div class="form-wrap">
@@ -41,7 +48,13 @@
 
                       <div class="input-box">
 
-                        <p>{{form.full_name}}</p>
+                        <p>{{form.first_name}}</p>
+                        </div>
+
+
+                      <div class="input-box">
+
+                        <p>{{form.last_name}}</p>
                         </div>
 
                       <div class="input-box">
@@ -54,8 +67,6 @@
                       <p >{{form.password2}}</p>
 
                         </div>
-
-
   
                       <span class="button-box">
                         <button class="btn" type="submit" value="Register">Sign Up</button>
