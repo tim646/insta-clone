@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%  static 'myprofile.css' %}"">
+    <title>My-Profile</title>
+</head>
+<body>
+        <!-- START HEADER -->
+         <header>
+            <div class=" logo"><img src="{% static '/assets/Icons/Logo.svg' %}" alt=""></div>
+            <div class="search"><input type="search" placeholder="search"></div>
+            <div class="menu">
+                <img src="{% static '/assets/Icons/Home-fill.svg' %}" alt="">
+                <img src="{% static '/assets/Icons/Messenger.svg' %}" alt="">
+                <img src="{% static '/assets/Icons/NewPosts.svg' %}" alt="">
+                <img src="{% static '/assets/Icons/FindPeople.svg' %}" alt="">
+                <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
+                <img src="{% static '/assets/secondary/Profile-Pic-S.svg' %}" alt="">
+            </div>
+        </header>
+        <div class="border"></div>
+
+        <div class="content">
+            <div class="followers">
+                <img src="{% static '/assets/Profile-Pic-S.svg' %}" alt="">
+                <div class="text">
+                    <div class="first">
+                        <p>shirleyromero</p>
+                        <button>Edit Profile</button>
+                        <img src="{% static '/assets/Icons/Options.svg' %}" alt="">
+                    </div>
+                    <div class="second">
+                        <p>0 posts</p>
+                        <p>255 followers</p>
+                        <p>500 following </p>
+                    </div>
+                    <div class="third">
+                        <p>Shirley Romero</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border2"></div>
+
+        <div class="publick">
+            <div class="toggle">
+                <div class="elements">
+                    <img src="{% static '/assets/Icons/Posts.svg' %}" alt="">
+                    <p>POSTS</p>
+                </div>
+                <div class="elements">
+                    <img src="{% static '/assets/Icons/Save.svg' %}" alt="">
+                    <span>SAVED</span>
+                </div>
+                <div class="elements">
+                    <img src="{% static '/assets/Icons/Tagged.svg' %}" alt="">
+                    <span>TAGGED</span>
+                </div>
+            </div>
+            
+            <div class="box">
+                <img src="{% static '/assets/image.svg' %}" alt="">
+                <div class="info">
+                    <p>Start capturing and sharing your moments.</p>
+                    <span>Get the app to share your first photo or video.</span>
+                    <div class="row">
+                        <img src="{% static '/assets/Banned.svg' %}" alt="">
+                        <img src="{% static '/assets/Banned2.svg' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

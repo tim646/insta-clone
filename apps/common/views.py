@@ -10,10 +10,10 @@ class HomeView(LoginRequiredMixin, View):
     def get(self, request):
         posts = Post.objects.all()
         histories = []  # history
-        notifications = Notification.objects.filter(user=request.user, is_seen=False)
+        ntcs = Notification.objects.filter(user=request.user, is_seen=False).count()
         context = {
-            "posts":posts,
-            "histories":histories,
-            "notifications":notifications
+            "posts": posts,
+            "histories": histories,
+            "ntcs": ntcs
         }
         return render(request, "home.html", context=context)

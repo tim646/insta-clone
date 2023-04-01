@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 
-media/
+media/posts
 
 apps/post/migrations
 apps/message/migrations
