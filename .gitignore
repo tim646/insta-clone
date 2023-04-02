@@ -12,7 +12,7 @@ __pycache__/
 media/posts
 
 apps/post/migrations
-apps/message/migrations
+apps/directs/migrations
 apps/user/migrations
 build/
 develop-eggs/
