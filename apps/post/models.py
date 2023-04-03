@@ -3,13 +3,13 @@ from django.db.models import ForeignKey, TextField, CASCADE, FileField, Model, D
 
 from apps.common.models import Base
 from apps.post.choices import NotoificationChoice
-from apps.post.utils import post_upload_path
-
+from apps.post.utils import post_upload_path, validate_file_extension
 
 
 class Post(Base):
     author = ForeignKey('user.User', on_delete=CASCADE, related_name="posts")
-    title = CharField( max_length=128, null=True, blank=True)
+    title = CharField(max_length=128, null=True, blank=True)
+
     class Meta:
         db_table = "posts"
 
@@ -18,12 +18,17 @@ class Post(Base):
         return Like.objects.filter(post_id=self.id).count()
 
     @property
+    def medias(self):
+        return PostMedia.objects.filter(post_id=self.id)
+
+    @property
     def comments(self):
         return Comment.objects.filter(post_id=self.id)
 
 
 class PostMedia(Model):
-    file = FileField(upload_to=post_upload_path, null=False, blank=False)
+    file = FileField(upload_to=post_upload_path, null=False, blank=False,
+    validators = [validate_file_extension, ])
     post = ForeignKey('post.Post', on_delete=CASCADE, related_name="post_medias")
 
 
@@ -34,7 +39,7 @@ class Like(Model):
 
     class Meta:
         db_table = "likes"
-
+        unique_together = ('user','post')
 
 class Comment(Model):
     post = ForeignKey('Post', related_name='comments', on_delete=CASCADE)
