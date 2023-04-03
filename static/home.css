@@ -4,6 +4,8 @@
     margin: 0;
 }
 
+
+
 body {
     width: 100%;
     height: 100vh;
@@ -32,6 +34,9 @@ header {
 .logo {
     width: 103px;
     height: 29px;
+}
+.press-like{
+    background-color: red;
 }
 
 .search input {

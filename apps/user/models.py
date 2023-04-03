@@ -14,7 +14,6 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-
 class UserProfile(Base):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100, null=True, blank=True)

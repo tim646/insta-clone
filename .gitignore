@@ -10,7 +10,7 @@ __pycache__/
 .Python
 
 media/posts
-
+media/profile_picture
 apps/post/migrations
 apps/directs/migrations
 apps/user/migrations
