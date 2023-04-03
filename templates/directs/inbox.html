@@ -80,7 +80,7 @@
 						</div>
 					</div>
 					{% for message in messages %}
-					<a href="" class="list-group-item list-group-item-action border-0 {% if active_direct == message.user.username %}active{% endif %}">
+					<a href="{% url 'directs' message.user.username %}" class="list-group-item list-group-item-action border-0 {% if active_direct == message.user.username %}active{% endif %}">
 						<div class="badge bg-success float-right"></div>
 						<div class="d-flex align-items-start pb-2">
 
