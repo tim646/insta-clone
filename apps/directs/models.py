@@ -19,7 +19,7 @@ class Message(models.Model):
         sender_message = Message(
             user=from_user,
             sender=from_user,
-            reciepient=to_user,
+            recipient=to_user,
             body=body,
             is_read=True
         )
@@ -28,7 +28,7 @@ class Message(models.Model):
         recipient_message = Message(
             user=to_user,
             sender=from_user,
-            reciepient=from_user,
+            recipient=from_user,
             body=body,
             is_read=True
         )
