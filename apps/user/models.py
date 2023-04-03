@@ -22,3 +22,11 @@ class UserProfile(Base):
     location = models.CharField(max_length=200, null=True, blank=True)
     url = models.URLField(max_length=200, null=True, blank=True)
 
+    def follow(self, user):
+        self.user.followers.add(user)
+
+    def unfollow(self, user):
+        self.user.followers.remove(user)
+
+    def __str__(self):
+        return self.user.username
