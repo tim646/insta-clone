@@ -12,6 +12,10 @@ class PostAdmin(ModelAdmin):
     list_display = ['title', 'author', 'created_at']
     inlines = (PostMediaInline,)
 
+@admin.register(PostMedia)
+class PostMediaAdmin(ModelAdmin):
+    list_display = ['file','post']
+
 
 @admin.register(Like)
 class LikeAdmin(ModelAdmin):
