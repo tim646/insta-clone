@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, redirect
 
 from apps.directs.models import Message
-from apps.user.models import UserProfile
+from apps.user.models import UserProfile, User
 
 
 # Create your views here.
@@ -49,4 +51,45 @@ def Directs(request, username):
         'messages': messages,
         'active_direct': active_direct,
     }
-    return render(request, 'directs/direct.html', context)
+    return render(request, 'directs/inbox.html', context)
+
+
+def SendMessage(request):
+    from_user = request.user
+    to_user_username = request.POST.get('to_user')
+    body = request.POST.get('body')
+
+    if request.method == "POST":
+        to_user = User.objects.get(username=to_user_username)
+        Message.sender_message(from_user, to_user, body)
+        return redirect('message')
+
+
+def UserSearch(request):
+    query = request.GET.get('q')
+    context = {}
+    if query:
+        users = User.objects.filter(Q(username__icontains=query))
+
+        # Paginator
+        paginator = Paginator(users, 8)
+        page_number = request.GET.get('page')
+        users_paginator = paginator.get_page(page_number)
+
+        context = {
+            'users': users_paginator,
+        }
+
+    return render(request, 'directs/search.html', context)
+
+
+def NewConversation(request, username):
+    from_user = request.user
+    body = ''
+    try:
+        to_user = User.objects.get(username=username)
+    except Exception as e:
+        return redirect('search-users')
+    if from_user != to_user:
+        Message.sender_message(from_user, to_user, body)
+    return redirect('message')

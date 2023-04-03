@@ -80,7 +80,7 @@
 						</div>
 					</div>
 					{% for message in messages %}
-					<a href="" class="list-group-item list-group-item-action border-0 {% if active_direct == message.user.username %}active{% endif %}">
+					<a href="{% url 'directs' message.user.username %}" class="list-group-item list-group-item-action border-0 {% if active_direct == message.user.username %}active{% endif %}">
 						<div class="badge bg-success float-right"></div>
 						<div class="d-flex align-items-start pb-2">
 
@@ -151,14 +151,14 @@
 
 
 						<div class="flex-grow-0 py-3 px-4 border-top">
-{#							<form method="POST" action="{% url 'send-directs' %}">#}
-{#								{% csrf_token %}#}
-{#								<div class="input-group">#}
-{#									<input type="hidden" name="to_user" id="" value="{{active_direct}}">#}
-{#									<input name="body" type="text" class="form-control" placeholder="Type your message">#}
-{#									<button class="btn btn-primary" type="submit">Send</button>#}
-{#								</div>#}
-{#							</form>#}
+							<form method="POST"  action="{% url 'send-message' %}">
+								{% csrf_token %}
+								<div class="input-group">
+									<input type="hidden" name="to_user" id="" value="{{active_direct}}">
+									<input name="body" type="text" class="form-control" placeholder="Type your message">
+									<button class="btn btn-primary" type="submit">Send</button>
+								</div>
+							</form>
 
 						</div>
 
