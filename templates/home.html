@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block style %}
-     <link rel="stylesheet" href="{% static 'home.css'%}">
+    <link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 
-{% load like%}
+{% load like %}
+{% load is_mp4 %}
 {% block content %}
 
 
@@ -25,7 +26,7 @@
                     <p>LauraMatt...</p>
                 </div>
                 <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (3).svg'%}" alt="">
+                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (3).svg' %}" alt="">
                     <p>harryprescott</p>
                 </div>
                 <div class="my">
@@ -40,30 +41,38 @@
                     <img src="{% static '/assets/storys/Avatar-Profile-Pic (6).svg' %}" alt="">
                     <p>johnschmit</p>
                 </div>
-{#                <div class="my">#}
-{#                    <img class="yar" src="{% static '/assets/storys/Avatar-Profile-Pic (7).svg' %}" alt="">#}
-{#                    <p>amy</p>#}
-{#                </div>#}
+                {#                <div class="my">#}
+                {#                    <img class="yar" src="{% static '/assets/storys/Avatar-Profile-Pic (7).svg' %}" alt="">#}
+                {#                    <p>amy</p>#}
+                {#                </div>#}
                 <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">
             </div>
             {% for post in posts %}
-            <div class="info">
-                <div class="foto">
-                    <img src="{{ post.author.image.url}}" style="border-radius: 50%; width: 15%" alt="">
-                    <p>{{ post.author }}</p>
-                </div>
-                <div class="more"><img src="{% static '/assets/Icons/More.svg' %}" alt=""></div>
-            </div>
-                {% for media in  post.medias.all  %}
-                    <div class="post">
-                        <img src="{{media.file.url}}" alt="">
+                <div class="info">
+                    <div class="foto">
+                        <img src="{{ post.author.image.url }}" style="border-radius: 50%; width: 15%" alt="">
+                        <a href="{% url 'user-posts' post.author.username %}"><p>{{ post.author }}</p></a>
                     </div>
+                    <div class="more"><img src="{% static '/assets/Icons/More.svg' %}" alt=""></div>
+                </div>
+                {% for media in  post.medias.all %}
+                    {% if media.file|check_is_mp4 %}
+                        <div class="post" >
+                            <video controls style="width: 48%">
+                                <source src="{{ media.file.url }}" type="video/mp4">
+                            </video>
+                        </div>
+                    {% else %}
+                        <div class="post">
+                            <img src="{{ media.file.url }}" style="width: 48%" alt="">
+                        </div>
+                    {% endif %}
                 {% endfor %}
                 <div class="footer">
                     <div class="icons">
                         <div class="leftnav">
                             <form action="{% url 'press-like' post.id %}">
-                                <button type="submit" {% if post|check_like:user %}class ="press-like" {% endif %} >
+                                <button type="submit" {% if post|check_like:user %}class ="press-like" {% endif %}>
                                     <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
                                 </button>
                             </form>
@@ -83,13 +92,13 @@
                         </div>
                         <div class="bottomcom"><span>View all {{ post.comments.count }} comments</span></div>
                     </div>
-                    <div class="time"><span>{{ post.created_at|timesince  }}  ago </span> </div>
-                    <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data", method="post">
+                    <div class="time"><span>{{ post.created_at|timesince }}  ago </span></div>
+                    <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data" , method="post">
                         {% csrf_token %}
                         <div class="addcomment">
                             <div class="emoji">
                                 <img src="{% static '/assets/Icons/Emoji.svg' %}" alt="">
-                                <input type="text" placeholder="Add a comment...", name="comment">
+                                <input type="text" placeholder="Add a comment..." , name="comment">
                             </div>
                             <button class="txt button" type="submit">post</button>
                         </div>
@@ -97,17 +106,17 @@
 
                 </div>
 
-        {% endfor %}
+            {% endfor %}
         </div>
         <!-- FINISH APP(LEFT) -->
 
         <!-- START RIGHT BOX -->
         <div class="secondary">
             <div class="myPr">
-                <img src="{% static '/assets/secondary/Profile-Pic.svg' %}" alt="">
+                <img src="{{ user.image.url }}" style="border-radius: 50%; width: 15%" alt="">
                 <div class="name">
-                    <p>shirleyromero</p>
-                    <span>Shirley romero</span>
+                    <p>{{ user }}</p>
+                    <span>{{ user.profile.first_name }} {{ user.profile.last_name }} </span>
                 </div>
                 <p class="blue">Switch</p>
             </div>
