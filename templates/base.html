@@ -20,7 +20,9 @@
         <div class="search"><input type="search" placeholder="search"></div>
         <div class="menu">
             <button type="submit"><img src="{% static '/assets/Icons/Home-fill.svg' %}" alt=""></button>
-            <img src="{% static '/assets/Icons/Messenger.svg' %}" alt="">
+            <a href="{% url 'message' user.id %}">
+                <img src="{% static '/assets/Icons/Messenger.svg' %}" alt="">
+            </a>
             <img src="{% static '/assets/Icons/NewPosts.svg' %}" alt="">
             <img src="{% static '/assets/Icons/FindPeople.svg'%}" alt="">
             <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
@@ -36,5 +38,5 @@
     {% endblock %}
 
 
-</body>
+</body>d
 </html>
