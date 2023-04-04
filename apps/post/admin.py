@@ -20,5 +20,8 @@ class PostMediaAdmin(ModelAdmin):
 @admin.register(Like)
 class LikeAdmin(ModelAdmin):
     list_display = ['post', 'user']
+@admin.register(Notification)
+class NotificationAdmin(ModelAdmin):
+    list_display = ['user', 'type']
 
-admin.site.register([ Comment, Notification])
+admin.site.register([ Comment])

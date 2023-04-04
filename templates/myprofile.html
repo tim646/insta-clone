@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 {% load static %}
 {% block style %}
     <link rel="stylesheet" href="{%  static 'myprofile.css' %}"">
@@ -9,17 +8,17 @@
                 <img src="{% static '/assets/Profile-Pic-S.svg' %}" alt="">
                 <div class="text">
                     <div class="first">
-                        <p>shirleyromero</p>
+                        <p>{{user.username}}</p>
                         <button>Edit Profile</button>
                         <img src="{% static '/assets/Icons/Options.svg' %}" alt="">
                     </div>
                     <div class="second">
-                        <p>0 posts</p>
-                        <p>255 followers</p>
-                        <p>500 following </p>
+                        <p>{{post_count}} posts</p>
+                        <p>{{followers_count}} followers</p>
+                        <p>{{followings_count}} following </p>
                     </div>
                     <div class="third">
-                        <p>Shirley Romero</p>
+                        <p>{{user.first_name}} {{user.last_name}}</p>
                     </div>
                 </div>
             </div>
@@ -44,7 +43,17 @@
             </div>
             
             <div class="box">
-                <img src="{% static '/assets/image.svg' %}" alt="">
+                <div class="row">
+                    {% for post in user_posts %}
+                    <div class="col">
+                        {% for media in  post.medias.all  %}
+                    <div class="post">
+                        <img src="{{media.file.url}}" alt="">
+                    </div>
+                {% endfor %}
+                    </div>
+                    {% endfor %}
+<!--                <img src="{% static '/assets/image.svg' %}" alt="">-->
                 <div class="info">
                     <p>Start capturing and sharing your moments.</p>
                     <span>Get the app to share your first photo or video.</span>

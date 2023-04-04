@@ -1,12 +1,16 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import UserRegisterForm, UserLoginForm
-
+from django.views.generic import ListView
+from .models import User
 # Create your views here.
+from ..post.models import Post, PostMedia
 
 
 class SignUpView(CreateView):
@@ -31,7 +35,6 @@ class SignUpView(CreateView):
         return super().form_invalid(form)
 
 
-
 class CustomLoginView(LoginView):
     form_class = UserLoginForm
     template_name = 'registration/login.html'
@@ -39,7 +42,33 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
 
+def profile(request):
+
+    user = User.objects.get(username=request.user.username)
+    followers_count = user.followers.count()  # get the number of followers for user
+    following_count = user.followings.count()
+    user_posts = Post.objects.filter(author=user)
+    post_count = user_posts.count()
+    context = {'user': user, 'followers_count': followers_count, 'followings_count': following_count,
+               'post_count': post_count, 'user_posts': user_posts}
+    return render(request, 'myprofile.html', context)
 
 
-    # def get_success_url(self):
-    #     return reverse_lazy('tasks')
+@login_required
+def follow(request, pk):
+    if request.method == 'POST':
+        user = request.user
+        user_to_follow = User.objects.get(pk=pk)
+        request.user.userprofile.follow(user_to_follow)
+        return redirect('profile', pk=pk)
+    return redirect('home')
+
+
+@login_required
+def unfollow(request, pk):
+    if request.method == 'POST':
+        user = request.user
+        user_to_unfollow = User.objects.get(pk=pk)
+        request.user.userprofile.follow(user_to_unfollow)
+        return redirect('profile', pk=pk)
+    return redirect('home')

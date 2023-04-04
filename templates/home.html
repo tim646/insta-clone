@@ -4,6 +4,7 @@
      <link rel="stylesheet" href="{% static 'home.css'%}">
 {% endblock %}
 
+{% load like%}
 {% block content %}
 
 
@@ -48,7 +49,7 @@
             {% for post in posts %}
             <div class="info">
                 <div class="foto">
-                    <img src="{% static '/assets/info/Avatar-Circle.svg' %}" alt="">
+                    <img src="{{ post.author.image.url}}" style="border-radius: 50%; width: 15%" alt="">
                     <p>{{ post.author }}</p>
                 </div>
                 <div class="more"><img src="{% static '/assets/Icons/More.svg' %}" alt=""></div>
@@ -62,7 +63,7 @@
                     <div class="icons">
                         <div class="leftnav">
                             <form action="{% url 'press-like' post.id %}">
-                                <button type="submit">
+                                <button type="submit" {% if post|check_like:user %}class ="press-like" {% endif %} >
                                     <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
                                 </button>
                             </form>
@@ -82,14 +83,18 @@
                         </div>
                         <div class="bottomcom"><span>View all {{ post.comments.count }} comments</span></div>
                     </div>
-                    <div class="time"><span>{{ post.updated_at }}</span></div>
-                    <div class="addcomment">
-                        <div class="emoji">
-                            <img src="{% static '/assets/Icons/Emoji.svg' %}" alt="">
-                            <input type="text" placeholder="Add a comment...">
+                    <div class="time"><span>{{ post.created_at|timesince  }}  ago </span> </div>
+                    <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data", method="post">
+                        {% csrf_token %}
+                        <div class="addcomment">
+                            <div class="emoji">
+                                <img src="{% static '/assets/Icons/Emoji.svg' %}" alt="">
+                                <input type="text" placeholder="Add a comment...", name="comment">
+                            </div>
+                            <button class="txt button" type="submit">post</button>
                         </div>
-                        <div class="txt">post</div>
-                    </div>
+                    </form>
+
                 </div>
 
         {% endfor %}
