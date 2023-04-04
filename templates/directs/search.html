@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'directs/direct_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -37,9 +37,9 @@
 
         {% for user in users %}
             <div class="side-menu__user-profile" style="text-align: start; border: solid rgba(192, 192, 192, 0.514) 1px; padding: 10px; border-radius: 25px;">
-                <a href="{% url '## there should be profile html url path' user.username %}" class="side-menu__user-avatar">
+                <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar">
                     {% if user.profile.image.url %}
-                    <img src="{{ user.profile.image.url }}" alt="User Picture">
+                    <img src="{{ user.image.url }}" alt="User Picture">
                     {% else %}
                     <img src="{% static 'assets1/default.jpg' %}" alt="User Picture">
 

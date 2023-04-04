@@ -3,37 +3,51 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
-from apps.directs.models import Message
+from apps.directs.models import Message, Participant, Chat
 from apps.user.models import UserProfile, User
 
 
 # Create your views here.
 
 @login_required
-def inbox(request):
-    user = request.user
-    messages = Message.get_message(user=request.user)
-    active_direct = None
-    directs = None
-    profile = get_object_or_404(UserProfile, user=user)
-
-    if messages:
-        message = messages[0]
-        active_direct = message['user'].username
-        directs = Message.objects.filter(user=request.user, recipient=message['user'])
-        directs.update(is_read=True)
-
-        for message in messages:
-            if message['user'].username == active_direct:
-                message['unread'] = 0
+def inbox(request, name=None):
+    if request.method == 'POST':
+        r = request.POST
+        chat = r['chat']
+        msg = r['msg']
+        sender = request.user
+        print('chat', chat)
+        chat_obj = get_object_or_404(Chat, id=chat)
+        Message.objects.create(chat_id=chat, sender=sender, msg=msg)
+        return redirect(f'/message/{chat_obj.name}/')
+    participants = Participant.objects.filter(~Q(user=request.user), chat__participant__user=request.user)
     context = {
-        'directs': directs,
-        'messages': messages,
-        'active_direct': active_direct,
-        'profile': profile,
+        'participants': participants,
+        'all_user': User.objects.all().exclude(id=request.user.id),
     }
-    return render(request, 'directs/inbox.html', context)
+    try:
+        chat = get_object_or_404(Chat, name=name)
+        context['chat'] = chat
+        context['partner'] = Participant.objects.filter(chat=chat).exclude(user=request.user).first()
+        messages = chat.messages.all().filter(~Q(sender=request.user), is_read=False)
+        for message in messages:
+            message.is_read = True
+            message.save()
+    except Exception as e:
+        pass
+    return render(request, 'directs/direct.html', context)
 
+
+def create_chat(request, user_id):
+    chat = Chat.objects.filter(participant__user=request.user).filter(participant__user__id=user_id).distinct()
+    if chat.exists():
+        return redirect(f'/message/{chat.first().name}')
+    else:
+        chat = Chat.objects.create()
+        Participant.objects.create(user_id=user_id, chat=chat)
+        Participant.objects.create(user=request.user, chat=chat)
+
+        return redirect(f'/message/{chat.name}')
 
 @login_required
 def Directs(request, username):
@@ -51,7 +65,7 @@ def Directs(request, username):
         'messages': messages,
         'active_direct': active_direct,
     }
-    return render(request, 'directs/inbox.html', context)
+    return render(request, 'directs/direct.html', context)
 
 
 def SendMessage(request):

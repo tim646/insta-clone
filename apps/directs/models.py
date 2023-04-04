@@ -1,47 +1,58 @@
 from django.db import models
 from django.db.models import Max
+from django.utils.crypto import get_random_string
 
 from apps.user.models import User, UserProfile
-
+from apps.common.models import Base
 
 # Create your models here.
 
 
-class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="from_user")
-    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="to_user")
-    body = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
+class Chat(Base):
+    name = models.CharField(max_length=200, null=True, blank=True)
+
+    @property
+    def un_read(self):
+        return self.messages.filter(is_read=False).count()
+
+    @property
+    def un_read_obj(self):
+        return self.messages.filter(is_read=False)
+
+    def __str__(self):
+        return self.name if self.name else ""
+
+    def save(self, *args, **kwargs):
+        if self.name is None:
+            self.name = get_random_string(20)
+        super(Chat, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Chat"
+        verbose_name_plural = "Chats"
+
+
+class Participant(Base):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = "Participant"
+        verbose_name_plural = "Participants"
+
+
+class Message(Base):
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    msg = models.TextField()
     is_read = models.BooleanField(default=False)
 
-    def sender_message(from_user, to_user, body):
-        sender_message = Message(
-            user=from_user,
-            sender=from_user,
-            recipient=to_user,
-            body=body,
-            is_read=True
-        )
-        sender_message.save()
+    def __str__(self):
+        return self.sender.username
 
-        recipient_message = Message(
-            user=to_user,
-            sender=from_user,
-            recipient=from_user,
-            body=body,
-            is_read=True
-        )
-        recipient_message.save()
-        return sender_message
-
-    def get_message(user):
-        users = []
-        messages = Message.objects.filter(user=user).values('recipient').annotate(last=Max('date')).order_by('-last')
-        for message in messages:
-            users.append({
-                'user': User.objects.get(pk=message['recipient']),
-                'last': message['last'],
-                'unread': Message.objects.filter(user=user, recipient__pk=message['recipient'], is_read=False).count()
-            })
-        return users
+    class Meta:
+        verbose_name = "Message"
+        verbose_name_plural = "Messages"
