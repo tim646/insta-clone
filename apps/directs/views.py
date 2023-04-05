@@ -83,7 +83,7 @@ def UserSearch(request):
     query = request.GET.get('q')
     context = {}
     if query:
-        users = User.objects.filter(Q(username__icontains=query))
+        users = User.objects.filter(Q(username__icontains=query) | Q(profile__first_name__icontains=query) | Q(profile__last_name__icontains=query))
 
         # Paginator
         paginator = Paginator(users, 8)
