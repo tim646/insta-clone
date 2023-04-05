@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="base.css">
     {% block style %}
     {% endblock %}
     <link rel="stylesheet"
@@ -26,7 +27,9 @@
             <img src="{% static '/assets/Icons/NewPosts.svg' %}" alt="">
             <img src="{% static '/assets/Icons/FindPeople.svg'%}" alt="">
             <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
-            <img src="{{ user.image.url }}" alt="" style="border-radius: 50%; width: 15%">
+            <a href="{% url 'profile' %}">
+                <img  src="{{ user.image.url }}" alt="" style="border-radius: 50%; width: 100%;   object-fit: cover;">
+            </a>
 
         </div>
     </header>

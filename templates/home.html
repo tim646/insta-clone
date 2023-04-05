@@ -6,6 +6,7 @@
 
 {% load like %}
 {% load is_mp4 %}
+{% load  saved %}
 {% block content %}
 
 
@@ -76,10 +77,16 @@
                                     <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
                                 </button>
                             </form>
-                            <img src="{% static '/assets/Icons/Comment.svg' %}" alt="">
+                            <a href="{% url 'post-detail' post.id %}">
+                                <img src="{% static '/assets/Icons/Comment.svg' %}" alt="">
+                            </a>
                             <img src="{% static '/assets/Icons/SharePosts.svg' %}" alt="">
                         </div>
-                        <div><img src="{% static '/assets/Icons/Save.svg' %}" alt=""></div>
+                        <div>
+                            <a href="{% url 'post-save' post.id %}">
+                                <img src="{% static '/assets/Icons/Save.svg' %}" {% if post|check_post_saved:user %} style="background-color: black" {% endif %} alt="">
+                            </a>
+                        </div>
                     </div>
                     <div class="likeinfo">
                         <p>{{ post.like_count }} Likes</p>

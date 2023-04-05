@@ -63,10 +63,3 @@ class Notification(Model):
         db_table = "notfications"
         ordering = ['-created_at', 'is_seen']
 
-
-class Saved(Model):
-    user = ForeignKey('user.User', CASCADE)
-    post = ForeignKey('post.Post', CASCADE)
-
-    class Mete:
-        db_table = 'saved'

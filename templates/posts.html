@@ -12,8 +12,9 @@
                 {% for media in post.medias.all %}
 
                           <div class="left">
-                                <a href="{% url 'post-detail' post.id %}"> {{ post.title }}</a>
                             <div class="post" >
+                                <a href="{% url 'post-detail' post.id %}">
+
                             {% if media.file|check_is_mp4 %}
                                     <video controls style="width: 60%">
                                         <source src="{{ media.file.url }}" type="video/mp4">
@@ -24,6 +25,7 @@
                                     <img src="{{media.file.url}}" alt="picture not found">
 
                             {% endif %}
+                                </a>
                             </div>
 
                          </div>

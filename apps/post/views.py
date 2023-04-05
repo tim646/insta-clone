@@ -60,3 +60,12 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class PostSaveView(LoginRequiredMixin, View):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        saved, created = Saved.objects.get_or_create(user=request.user, post=post)
+        if not created:
+            saved.delete()
+        return redirect('home')

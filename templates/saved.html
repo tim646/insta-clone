@@ -1,7 +1,7 @@
 {% load static %}
 {% load is_mp4 %}
 {% block style %}
-    <link rel="stylesheet" href="{%  static 'myprofile.css' %}"">
+    <link rel="stylesheet" href="{%  static 'myprofile.css' %}">
 {% endblock %}
 {% block content %}
         <div class="content">
@@ -30,25 +30,25 @@
         <div class="publick">
             <div class="toggle">
                 <div class="elements">
+                    <a href="{% url 'profile' %}">
                     <img src="{% static '/assets/Icons/Posts.svg' %}" alt="">
-                    <p><u>POSTS</u> </p>
+                    </a>
+                    <p>POSTS</p>
                 </div>
                 <div class="elements">
-                    <a href="{% url 'saved' user.username %}">
                     <img src="{% static '/assets/Icons/Save.svg' %}" alt="">
-                    </a>
-                    <span>SAVED</span>
-
+                    <span><u>SAVED</u></span>
                 </div>
                 <div class="elements">
                     <img src="{% static '/assets/Icons/Tagged.svg' %}" alt="">
                     <span>TAGGED</span>
                 </div>
             </div>
-            
-            <div class="box">
+        </div>
+
+        <div class="box">
                 <div class="row">
-                    {% for post in user_posts %}
+                    {% for post in saved.post.all %}
                         <div class="col">
                             {% for media in  post.medias.all  %}
                                 {% if media.file|check_is_mp4 %}
