@@ -60,7 +60,3 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-# class PostDetailView(LoginRequiredMixin, DetailView):
-#     template_name = 'post/post_detail.html'
-#     model = Post
-#     context_object_name = "post"
