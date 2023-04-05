@@ -90,7 +90,7 @@
                             <p>{{ post.title }}</p>
                             <span>...more</span>
                         </div>
-                        <div class="bottomcom"><span>View all {{ post.comment_count }} comments</span></div>
+                        <div class="bottomcom"><span><a href="{% url 'post-detail' post.id %}">View all</a> {{ post.comment_count }} comments</span></div>
                     </div>
                     <div class="time"><span>{{ post.created_at|timesince }}  ago </span></div>
                     <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data" , method="post">
@@ -128,8 +128,8 @@
                 <div class="follow">
                     <img src="{{ sug.image.url }}" style="border-radius: 50%; width: 15%" alt="">
                     <div class="texx">
-                        <p>{{ sug.username }}</p>
-                        <span>Followed by {{ sug.followers.first }}</span>
+                        <a id="text-decor-none" href="{% url 'user-posts' sug.username  %}">{{ sug.username }}</a>
+                        <span>Followed by {{ sug.followers.first}}</span>
                     </div>
                     <p class="blue">follow</p>
                 </div>
