@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load is_mp4 %}
 {% block style %}
     <link rel="stylesheet" href="{% static 'posts.css' %}">
 {% endblock %}
@@ -7,19 +8,27 @@
 
     <div class="content">
         <div class="first">
-            <div class="left">
-                <img src="{% static '/assets/Explore/Small-Post-1.svg' %}" alt="">
-                <img src="{% static '/assets/Explore/Small-Post-2.svg' %}" alt="">
-            </div>
-            <div>
-                <img src="{% static '/assets/Explore/Big-Post.svg' %}" alt="">
-            </div>
-        </div>
-        <div class="second">
-            <img src="{% static '/assets/Explore/Small-Post-3.svg' %}" alt="">
-            <img src="{% static '/assets/Explore/Small-Post-4.svg' %}" alt="">
-            <img src="{% static '/assets/Explore/Small-Post.svg' %}" alt="">
+            {% for post in posts %}
+                {% for media in post.medias.all %}
+{#                        <div class="left">#}
+                            <div class="post" >
+
+                            {% if media.file|check_is_mp4 %}
+                                    <video controls style="width: 48%">
+                                        <source src="{{ media.file.url }}" type="video/mp4">
+                                    </video>
+
+                            {% else %}
+
+                                    <img src="{{media.file.url}}" alt="picture not found">
+
+                            {% endif %}
+                            </div>
+                {% endfor %}
+{#           </div>#}
+            {% endfor %}
         </div>
 
     </div>
+
 {% endblock %}

@@ -45,13 +45,13 @@
             <div class="box">
                 <div class="row">
                     {% for post in user_posts %}
-                    <div class="col">
-                        {% for media in  post.medias.all  %}
-                    <div class="post">
-                        <img src="{{media.file.url}}" alt="">
-                    </div>
-                {% endfor %}
-                    </div>
+                        <div class="col">
+                            {% for media in  post.medias.all  %}
+                            <div class="post">
+                                <img src="{{media.file.url}}" alt="">
+                            </div>
+                         {% endfor %}
+                        </div>
                     {% endfor %}
 <!--                <img src="{% static '/assets/image.svg' %}" alt="">-->
                 <div class="info">

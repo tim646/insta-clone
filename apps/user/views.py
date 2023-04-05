@@ -46,7 +46,7 @@ def profile(request):
 
     user = User.objects.get(username=request.user.username)
     followers_count = user.followers.count()  # get the number of followers for user
-    following_count = user.followings.count()
+    following_count  = user.followings.count()
     user_posts = Post.objects.filter(author=user)
     post_count = user_posts.count()
     context = {'user': user, 'followers_count': followers_count, 'followings_count': following_count,
