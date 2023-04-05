@@ -1,4 +1,57 @@
 {% extends 'post/base.html' %}
+{% load static %}
+{% load is_mp4 %}
+
 {% block content %}
-    <h1>Post Detail</h1>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-body">
+                        {% for media in post.medias.all %}
+                            {% if media.file|check_is_mp4 %}
+                                <video src="{{ media.file.url }}" class="w-100" controls></video>
+                            {% else %}
+                                <img src="{{ media.file.url }}" class="w-100" alt="Image">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {#          <div class="card-footer">#}
+                    {#            <p class="card-text">{{ post.caption }}</p>#}
+                    {#          </div>#}
+                </div>
+
+                <div class="mt-4">
+                    <h5 class="mb-3">{{ post.comments.count }} Comments</h5>
+                    {% for comment in post.comments.all %}
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                <img src="{{ comment.author.image.url }}" alt="{{ comment.author.username }}"
+                                     class="rounded-circle mr-2" width="30px" height="30px", style="border-radius: 100%">
+                                <a href="{% url 'user-posts' comment.author.username %}">{{ comment.author.username }}</a>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ comment.body }}</p>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>No comments yet.</p>
+                    {% endfor %}
+                </div>
+                    <div class="mt-4">
+                       <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data" , method="post">
+                        {% csrf_token %}
+                        <div class="addcomment">
+                            <div class="emoji">
+                                <img src="{% static '/assets/Icons/Emoji.svg' %}" alt="">
+                                <input type="text" placeholder="Add a comment..." , name="comment">
+                            </div>
+                            <button class="txt button" type="submit">post</button>
+                        </div>
+                    </form>
+
+                    </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -22,8 +22,8 @@ class Post(Base):
         return PostMedia.objects.filter(post_id=self.id)
 
     @property
-    def comments(self):
-        return Comment.objects.filter(post_id=self.id)
+    def comment_count(self):
+        return Comment.objects.filter(post_id=self.id).count()
 
 
 class PostMedia(Model):

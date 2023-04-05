@@ -90,7 +90,7 @@
                             <p>{{ post.title }}</p>
                             <span>...more</span>
                         </div>
-                        <div class="bottomcom"><span>View all {{ post.comments.count }} comments</span></div>
+                        <div class="bottomcom"><span>View all {{ post.comment_count }} comments</span></div>
                     </div>
                     <div class="time"><span>{{ post.created_at|timesince }}  ago </span></div>
                     <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data" , method="post">

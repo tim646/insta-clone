@@ -8,13 +8,14 @@
 
     <div class="content">
         <div class="first">
-            {% for post in posts %}
+             {% for post in posts %}
                 {% for media in post.medias.all %}
-{#                        <div class="left">#}
-                            <div class="post" >
 
+                          <div class="left">
+                                <a href="{% url 'post-detail' post.id %}"> {{ post.title }}</a>
+                            <div class="post" >
                             {% if media.file|check_is_mp4 %}
-                                    <video controls style="width: 48%">
+                                    <video controls style="width: 60%">
                                         <source src="{{ media.file.url }}" type="video/mp4">
                                     </video>
 
@@ -24,11 +25,13 @@
 
                             {% endif %}
                             </div>
+
+                         </div>
                 {% endfor %}
-{#           </div>#}
+
             {% endfor %}
+
+
         </div>
-
     </div>
-
 {% endblock %}
