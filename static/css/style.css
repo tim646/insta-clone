@@ -373,14 +373,40 @@
   
   }
 
+/* Google Sign In Button */
+.google-btn {
+  display: inline-block;
+  background-color: #7B68EE;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-  /* sign up style */
-  .google {
-    background-color: #cb5646;
-    color: white;
-  }
+.google-btn:hover {
+  background-color: #3367D6;
+}
 
-  /* end sign up style */
+.google-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+}
+
+.google-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%208%208'%3E%3Cpath%20fill%3D'%23ffffff'%20d%3D'M4%2C4v1.5h2.4c-0.1%2C0.6-0.7%2C1.5-2.4%2C1.5c-1.4%2C0-2.5-1.1-2.5-2.5S2%2C1.5%2C3.4%2C1.5c0.8%2C0%2C1.3%2C0.3%2C1.7%2C0.6l1.2-1.2C5.1%2C0.7%2C4.4%2C0%2C3.4%2C0C1.5%2C0%2C0%2C1.5%2C0%2C3.4s1.5%2C3.4%2C3.4%2C3.4c1.7%2C0%2C2.5-1.2%2C2.5-2.2c0-0.2%2C0-0.5-0.1-0.8H4z'%2F%3E%3C%2Fsvg%3E");
+  background-size: contain;
+  margin-right: 8px;
+}
+/* end Google Sign In Button */
 
 /* recaptcha style */
 

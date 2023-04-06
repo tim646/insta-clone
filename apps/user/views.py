@@ -68,8 +68,10 @@ def profile(request):
     following_count  = user.followings.count()
     user_posts = Post.objects.filter(author=user)
     post_count = user_posts.count()
+    suggested_followers = User.objects.exclude(id=request.user.id).exclude(id__in=request.user.followings.all())
+
     context = {'user': user, 'followers_count': followers_count, 'followings_count': following_count,
-               'post_count': post_count, 'user_posts': user_posts}
+               'post_count': post_count, 'user_posts': user_posts, 'suggested_followers': suggested_followers}
     return render(request, 'myprofile.html', context)
 
 

@@ -18,9 +18,15 @@
                 <div class="login-box">
                   <div class="header">
                     <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" alt="Instagram">
-                    <a href="{% provider_login_url 'google' %}"class="google btn">
-                        <i class="fa fa-google fa-fw"></i> Login with Google
-                      </a>
+                      <form action="/accounts/google/login/" method="post">
+                                {% csrf_token %}
+
+                      <button class="google-btn" onclick="signInWithGoogle()">
+                            <span class="google-icon"></span>
+                            <span>Sign in with Google</span>
+                          </button>
+                      </form>
+
                   </div><!-- Header end -->
 
                  {% if messages %}
