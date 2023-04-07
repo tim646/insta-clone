@@ -1,6 +1,7 @@
 from audioop import reverse
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
@@ -8,8 +9,8 @@ from django.views.generic import CreateView, ListView, DetailView, TemplateView
 
 from apps.post.choices import NotoificationChoice
 from apps.post.forms import PostCreateForm
-from apps.post.models import Post, Like, Notification, Comment
-from apps.user.models import User
+from apps.post.models import Post, Like, Notification, Comment, History
+from apps.user.models import User, Saved
 
 
 class PressLikeView(View, LoginRequiredMixin):
@@ -42,16 +43,41 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class UserPostListView(LoginRequiredMixin, TemplateView):
-
     template_name = 'posts.html'
+
     def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         posts = Post.objects.filter(author=user)
-        context["posts"]=posts
+        context["posts"] = posts
         return context
 
-# class PostDetailView(LoginRequiredMixin, DetailView):
-#     template_name = 'post/post_detail.html'
-#     model = Post
-#     context_object_name = "post"
+
+class PostDetailView(LoginRequiredMixin, DetailView):
+    queryset = Post.objects.all()
+    template_name = 'post/post_detail.html'
+    context_object_name = "post"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class PostSaveView(LoginRequiredMixin, View):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        saved, created = Saved.objects.get_or_create(user=request.user, post=post)
+        if not created:
+            saved.delete()
+        return redirect('home')
+
+class HistoryDetailView(DetailView):
+    model = History
+    template_name = 'history_detail.html'
+    context_object_name = 'history'
+
+    def get_object(self, queryset=None):
+        obj =  super().get_object(queryset)
+        obj.mark_seen(self.request.user)
+        return obj
+

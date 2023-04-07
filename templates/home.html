@@ -6,6 +6,7 @@
 
 {% load like %}
 {% load is_mp4 %}
+{% load  saved %}
 {% block content %}
 
 
@@ -13,39 +14,19 @@
     <div class="app">
         <div class="elements">
             <div class="story">
+                {% for history in histories %}
                 <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic.svg' %}" alt="">
-                    <p>my store</p>
+                    <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
+                    <img src="{{ history.author.image.url }}" style="border-radius: 100%;" alt="">
+                    {% if user == history.author %}
+                        <p>my store</p>
+                    {% else %}
+                        <p>{{ history.author }}</p>
+                    {% endif %}
+                    </a>
                 </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (1).svg' %}" alt="">
-                    <p>TerryLucas</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (2).svg' %}" alt="">
-                    <p>LauraMatt...</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (3).svg' %}" alt="">
-                    <p>harryprescott</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (4).svg' %}" alt="">
-                    <p>ednamanz</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (5).svg' %}" alt="">
-                    <p>christinaste...</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (6).svg' %}" alt="">
-                    <p>johnschmit</p>
-                </div>
-                {#                <div class="my">#}
-                {#                    <img class="yar" src="{% static '/assets/storys/Avatar-Profile-Pic (7).svg' %}" alt="">#}
-                {#                    <p>amy</p>#}
-                {#                </div>#}
-                <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">
+                {% endfor %}
+{#                <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">#}
             </div>
             {% for post in posts %}
                 <div class="info">
@@ -76,10 +57,16 @@
                                     <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
                                 </button>
                             </form>
-                            <img src="{% static '/assets/Icons/Comment.svg' %}" alt="">
+                            <a href="{% url 'post-detail' post.id %}">
+                                <img src="{% static '/assets/Icons/Comment.svg' %}" alt="">
+                            </a>
                             <img src="{% static '/assets/Icons/SharePosts.svg' %}" alt="">
                         </div>
-                        <div><img src="{% static '/assets/Icons/Save.svg' %}" alt=""></div>
+                        <div>
+                            <a href="{% url 'post-save' post.id %}">
+                                <img src="{% static '/assets/Icons/Save.svg' %}" {% if post|check_post_saved:user %} style="background-color: black" {% endif %} alt="">
+                            </a>
+                        </div>
                     </div>
                     <div class="likeinfo">
                         <p>{{ post.like_count }} Likes</p>
@@ -90,7 +77,7 @@
                             <p>{{ post.title }}</p>
                             <span>...more</span>
                         </div>
-                        <div class="bottomcom"><span>View all {{ post.comments.count }} comments</span></div>
+                        <div class="bottomcom"><span><a href="{% url 'post-detail' post.id %}">View all</a> {{ post.comment_count }} comments</span></div>
                     </div>
                     <div class="time"><span>{{ post.created_at|timesince }}  ago </span></div>
                     <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data" , method="post">
@@ -128,8 +115,8 @@
                 <div class="follow">
                     <img src="{{ sug.image.url }}" style="border-radius: 50%; width: 15%" alt="">
                     <div class="texx">
-                        <p>{{ sug.username }}</p>
-                        <span>Followed by {{ sug.followers.first }}</span>
+                        <a id="text-decor-none" href="{% url 'user-posts' sug.username  %}">{{ sug.username }}</a>
+                        <span>Followed by {{ sug.followers.first}}</span>
                     </div>
                     <p class="blue">follow</p>
                 </div>

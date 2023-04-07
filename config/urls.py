@@ -6,7 +6,7 @@ from config import settings
 
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
-    path('posts/', include('apps.post.urls')),
+    path('posts/', include(('apps.post.urls'))),
     path('home/', include('apps.common.urls')),
     path('', include('apps.user.urls')),
 

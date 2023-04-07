@@ -30,3 +30,15 @@ class UserProfile(Base):
 
     def __str__(self):
         return self.user.username
+
+
+class Saved(models.Model):
+    user = models.ForeignKey('user.User', models.CASCADE)
+    post = models.ForeignKey('post.Post', models.CASCADE)
+
+    class Mete:
+        db_table = 'saved'
+        uniqeu_togather = ['user', 'post']
+        verbose_name = 'Saved'
+        verbose_name_plural = 'Saved'
+
