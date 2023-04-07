@@ -19,7 +19,7 @@
                     <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
                     <img src="{{ history.author.image.url }}" style="border-radius: 100%;" alt="">
                     {% if user == history.author %}
-                        <p>my store</p>
+                        <p>my story</p>
                     {% else %}
                         <p>{{ history.author }}</p>
                     {% endif %}
