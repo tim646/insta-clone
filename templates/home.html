@@ -14,39 +14,19 @@
     <div class="app">
         <div class="elements">
             <div class="story">
+                {% for history in histories %}
                 <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic.svg' %}" alt="">
-                    <p>my store</p>
+                    <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
+                    <img src="{{ history.author.image.url }}" style="border-radius: 100%;" alt="">
+                    {% if user == history.author %}
+                        <p>my store</p>
+                    {% else %}
+                        <p>{{ history.author }}</p>
+                    {% endif %}
+                    </a>
                 </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (1).svg' %}" alt="">
-                    <p>TerryLucas</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (2).svg' %}" alt="">
-                    <p>LauraMatt...</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (3).svg' %}" alt="">
-                    <p>harryprescott</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (4).svg' %}" alt="">
-                    <p>ednamanz</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (5).svg' %}" alt="">
-                    <p>christinaste...</p>
-                </div>
-                <div class="my">
-                    <img src="{% static '/assets/storys/Avatar-Profile-Pic (6).svg' %}" alt="">
-                    <p>johnschmit</p>
-                </div>
-                {#                <div class="my">#}
-                {#                    <img class="yar" src="{% static '/assets/storys/Avatar-Profile-Pic (7).svg' %}" alt="">#}
-                {#                    <p>amy</p>#}
-                {#                </div>#}
-                <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">
+                {% endfor %}
+{#                <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">#}
             </div>
             {% for post in posts %}
                 <div class="info">

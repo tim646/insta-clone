@@ -1,6 +1,7 @@
 from audioop import reverse
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
@@ -8,8 +9,8 @@ from django.views.generic import CreateView, ListView, DetailView, TemplateView
 
 from apps.post.choices import NotoificationChoice
 from apps.post.forms import PostCreateForm
-from apps.post.models import Post, Like, Notification, Comment
-from apps.user.models import User
+from apps.post.models import Post, Like, Notification, Comment, History
+from apps.user.models import User, Saved
 
 
 class PressLikeView(View, LoginRequiredMixin):
@@ -69,3 +70,14 @@ class PostSaveView(LoginRequiredMixin, View):
         if not created:
             saved.delete()
         return redirect('home')
+
+class HistoryDetailView(DetailView):
+    model = History
+    template_name = 'history_detail.html'
+    context_object_name = 'history'
+
+    def get_object(self, queryset=None):
+        obj =  super().get_object(queryset)
+        obj.mark_seen(self.request.user)
+        return obj
+

@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, TemplateView
 
-from apps.post.models import Post, Notification, Like
+from apps.post.models import Post, Notification, Like, History
 from apps.user.models import User
 
 
@@ -12,7 +12,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         posts = Post.objects.all().exclude(author=self.request.user)
         suggestesion = User.objects.exclude(id=self.request.user.id).exclude(id__in=self.request.user.followings.all())
-        histories = []  # history
+        histories = History.objects.order_by( '-created_at')
         ntcs = Notification.objects.filter(user=self.request.user, is_seen=False).count()
         context["posts"] = posts
         context["suggestion"] = suggestesion

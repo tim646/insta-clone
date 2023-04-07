@@ -1,9 +1,9 @@
-from django.db.models import ForeignKey, TextField, CASCADE, FileField, Model, DateTimeField, BooleanField, \
-    IntegerField, CharField
+from django.db.models import ForeignKey, CASCADE, FileField, Model, DateTimeField, BooleanField, \
+    CharField, ManyToManyField
 
 from apps.common.models import Base
 from apps.post.choices import NotoificationChoice
-from apps.post.utils import post_upload_path, validate_file_extension
+from apps.post.utils import post_upload_path, validate_file_extension, history_upload_path
 
 
 class Post(Base):
@@ -47,7 +47,6 @@ class Comment(Model):
     body = CharField(max_length=500)
     author = ForeignKey('user.User', CASCADE, 'comments')
     created_at = DateTimeField(auto_now_add=True)
-    # like = IntegerField(default=0)
 
     class Meta:
         db_table = "comments"
@@ -62,4 +61,20 @@ class Notification(Model):
     class Meta:
         db_table = "notfications"
         ordering = ['-created_at', 'is_seen']
+
+
+class History(Model):
+    author = ForeignKey('user.User', CASCADE,'histories')
+    seen_by = ManyToManyField('user.User','seen_by', blank=True)
+    file = FileField(validators=[validate_file_extension,], upload_to=history_upload_path)
+    created_at = DateTimeField(auto_now_add=True)
+
+
+    def mark_seen(self, user):
+        self.seen_by.add(user)
+        self.save()
+    class Meta:
+        db_table = 'history'
+        verbose_name = 'History'
+        verbose_name_plural = 'Histories'
 
