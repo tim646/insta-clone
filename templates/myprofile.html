@@ -11,7 +11,9 @@
                     <div class="first">
                         <p>{{user.username}}</p>
                         <button>Edit Profile</button>
+                        <a href="{% url 'home' %}">
                         <img src="{% static '/assets/Icons/Options.svg' %}" alt="">
+                        </a>
                     </div>
                     <div class="second">
                         <p>{{post_count}} posts</p>
