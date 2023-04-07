@@ -44,7 +44,8 @@ class CustomLoginView(LoginView):
 
 class SavedPostView(LoginRequiredMixin, ListView):
     template_name = 'saved.html'
-
+    model = Saved
+    context_object_name = 'saved'
     def get_queryset(self):
         self.user = get_object_or_404(User, username=self.kwargs.get('username'))
         saved = Saved.objects.filter(user=self.user)
