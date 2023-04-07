@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, StackedInline
 
-from apps.post.models import Post, Like, PostMedia, Comment, Notification
+from apps.post.models import Post, Like, PostMedia, Comment, Notification, History
 
 
 class PostMediaInline(StackedInline):
@@ -24,4 +24,6 @@ class LikeAdmin(ModelAdmin):
 class NotificationAdmin(ModelAdmin):
     list_display = ['user', 'type']
 
-admin.site.register([ Comment])
+@admin.register(History)
+class HistoryAdmin(ModelAdmin):
+    list_display = ['author',]
