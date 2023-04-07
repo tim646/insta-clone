@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from apps.post.views import PostCreateView, UserPostListView, PressLikeView, CommentCreateView, PostDetailView, \
-    PostSaveView
+    PostSaveView, HistoryDetailView
 
 urlpatterns = [
 
