@@ -39,3 +39,6 @@ class Saved(models.Model):
     class Mete:
         db_table = 'saved'
         uniqeu_togather = ['user', 'post']
+        verbose_name = 'Saved'
+        verbose_name_plural = 'Saved'
+
