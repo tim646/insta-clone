@@ -48,20 +48,19 @@
 
         <div class="box">
                 <div class="row">
-                    {% for post in saved.post.all %}
+                    {% for save in saved %}
                         <div class="col">
-                            {% for media in  post.medias.all  %}
+                            {% for media in  save.post.medias.all  %}
                                 {% if media.file|check_is_mp4 %}
                                     <div class="post" >
-                                        <a href="{% url 'post-detail' post.id %}">
                                         <video controls >
                                             <source src="{{ media.file.url }}" type="video/mp4" width="25%">
                                         </video>
-                                        </a>
+                                    </div>
                                 {% else %}
-                                        <a href="{% url 'post-detail' post.id %}">
+                                    </div>
                                         <img src="{{ media.file.url }}" style="width: 48%" alt="">
-                                        </a>
+
                                     </div>
                                 {% endif %}
                             {% endfor %}
