@@ -14,19 +14,6 @@
 </head>
 
 <body>
-    <!-- START HEADER -->
-    <header>
-        <div class="logo"><img src="{% static '/assets/Icons/Logo.svg' %}" alt=""></div>
-        <div class="search"><input type="search" placeholder="search"></div>
-        <div class="menu">
-            <button type="submit"><img src="{% static '/assets/Icons/Home-fill.svg' %}" alt=""></button>
-            <a href="{% url 'message' user.id %}">
-                <img src="{% static '/assets/Icons/Messenger.svg' %}" alt="">
-            </a>
-            <img src="{% static '/assets/Icons/NewPosts.svg' %}" alt="">
-            <img src="{% static '/assets/Icons/FindPeople.svg'%}" alt="">
-            <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
-            <img src="{{ user.image.url }}" alt="" style="border-radius: 50%; width: 15%">
 <!-- START HEADER -->
 <header>
     <div class="logo"><img src="{% static '/assets/Icons/Logo.svg' %}" alt=""></div>
@@ -50,7 +37,5 @@
 {% block content %}
 
 {% endblock %}
-
-
 </body>
 </html>
