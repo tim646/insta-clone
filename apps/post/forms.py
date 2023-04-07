@@ -1,14 +1,12 @@
-from django.forms import ModelForm
-from apps.post.models import Post, Comment
 
+from django import forms
 
-class CommentForm(ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['body', ]
+from django.forms.models import inlineformset_factory
+from .models import Post, PostMedia
 
-
-class PostCreateForm(ModelForm):
+class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ('author',)
+        fields = ['title']
+
+PostMediaFormSet = inlineformset_factory(Post, PostMedia, fields=['file'], extra=1)

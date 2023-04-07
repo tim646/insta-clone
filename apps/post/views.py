@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import CreateView, ListView, DetailView, TemplateView
 
 from apps.post.choices import NotoificationChoice
-from apps.post.forms import PostCreateForm
+from apps.post.forms import PostCreateForm, PostMediaFormSet
 from apps.post.models import Post, Like, Notification, Comment, History
 from apps.user.models import User, Saved
 
@@ -32,14 +32,31 @@ class CommentCreateView(View, LoginRequiredMixin):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    template_name = "post/post_create.html"
     model = Post
     form_class = PostCreateForm
-    success_url = reverse_lazy('post-list')
+    template_name = 'post/post_create.html'
+    success_url = reverse_lazy('profile')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['post_media_formset'] = PostMediaFormSet(self.request.POST, self.request.FILES)
+        else:
+            context['post_media_formset'] = PostMediaFormSet()
+        return context
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+        context = self.get_context_data()
+        post_media_formset = context['post_media_formset']
+        if post_media_formset.is_valid():
+            self.object = form.save(commit=False)
+            self.object.author = self.request.user
+            self.object.save()
+            post_media_formset.instance = self.object
+            post_media_formset.save()
+            return redirect('profile')
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
 
 
 class UserPostListView(LoginRequiredMixin, TemplateView):
@@ -71,13 +88,13 @@ class PostSaveView(LoginRequiredMixin, View):
             saved.delete()
         return redirect('home')
 
+
 class HistoryDetailView(DetailView):
     model = History
     template_name = 'history_detail.html'
     context_object_name = 'history'
 
     def get_object(self, queryset=None):
-        obj =  super().get_object(queryset)
+        obj = super().get_object(queryset)
         obj.mark_seen(self.request.user)
         return obj
-
