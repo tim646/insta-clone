@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+{% block content %}
+  <h1>Notifications</h1>
+  {% if notifications %}
+    <ul>
+    {% for notification in notifications %}
+      <li{% if notification.is_seen %} class="seen"{% endif %}>
+        {{ notification.type }} notification received on {{ notification.created_at }}
+      </li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No notifications to display.</p>
+  {% endif %}
+{% endblock %}

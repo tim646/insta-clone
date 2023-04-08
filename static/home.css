@@ -20,6 +20,27 @@ body {
     display: flex;
     gap: 28px;
 }
+.history-button {
+  background-color: #fff;
+  color: #333;
+  border: 2px solid #333;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.history-button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.history-button:before {
+  font-size: 18px;
+  margin-right: 10px;
+}
 
 header {
     width: 100%;

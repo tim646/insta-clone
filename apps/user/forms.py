@@ -15,7 +15,7 @@ class UserLoginForm(AuthenticationForm):
         widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Username'}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
-        'class': 'input', 'placeholder': 'Password'}))
+            'class': 'input', 'placeholder': 'Password'}))
     captcha = ReCaptchaField()
 
     def __init__(self, *args, **kwargs):
@@ -66,7 +66,8 @@ class EditProfileForm(forms.ModelForm):
 
 class UserRegisterForm(UserCreationForm, SignupForm):
     username = forms.CharField(
-       widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}), max_length=55, required=True)
+        widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}), max_length=55,
+        required=True)
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control', 'placeholder': 'First Name'}), max_length=60, required=True)

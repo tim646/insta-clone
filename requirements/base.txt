@@ -14,5 +14,7 @@ django-recaptcha==3.0.0
 django-allauth==0.53.1
 django-extensions==3.2.1
 python-magic-bin==0.4.14
+daphne==4.0.0
+channels==4.0.0
 
 

@@ -1,24 +1,22 @@
-from audioop import reverse
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import transaction
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, ListView, DetailView, TemplateView
+from django.views.generic import CreateView, DetailView, TemplateView, ListView
 
 from apps.post.choices import NotoificationChoice
-from apps.post.forms import PostCreateForm, PostMediaFormSet
+from apps.post.forms import PostCreateForm, PostMediaFormSet, HistoryCreateForm
 from apps.post.models import Post, Like, Notification, Comment, History
 from apps.user.models import User, Saved
 
 
 class PressLikeView(View, LoginRequiredMixin):
     def get(self, request, post_id):
-        like, created = Like.objects.get_or_create(post_id=post_id, user=request.user)
+        post = get_object_or_404(Post, pk=post_id)
+        like, created = Like.objects.get_or_create(post=post, user=request.user)
         if not created:
             like.delete()
-        if created and not Notification.objects.filter(user=request.user, type=NotoificationChoice.LIKE).exists():
+        if created and not Notification.objects.filter(user=post.author, type=NotoificationChoice.LIKE).exists():
             Notification.objects.create(user=request.user, type=NotoificationChoice.LIKE)
 
         return redirect('home')
@@ -26,10 +24,26 @@ class PressLikeView(View, LoginRequiredMixin):
 
 class CommentCreateView(View, LoginRequiredMixin):
     def post(self, request, post_id):
-        Comment.objects.create(post_id=post_id, body=request.POST['comment'], author=self.request.user)
-        Notification.objects.create(user=request.user, type=NotoificationChoice.COMMENT)
+        post = get_object_or_404(Post, pk=post_id)
+        Comment.objects.create(post=post.id, body=request.POST['comment'], author=self.request.user)
+        Notification.objects.create(user=post.author, type=NotoificationChoice.COMMENT)
         return redirect('home')
 
+
+class NotificationListView(LoginRequiredMixin, ListView):
+    model = Notification
+    context_object_name = 'notifications'
+    template_name = 'notifations.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context =  super().get_context_data(object_list=object_list, **kwargs)
+        for notification in context['notifications']:
+            notification.is_seen=True
+            notification.save()
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -87,6 +101,13 @@ class PostSaveView(LoginRequiredMixin, View):
         if not created:
             saved.delete()
         return redirect('home')
+
+
+class HistoryCeateView(CreateView):
+    model = History
+    fields = ['file', ]
+    form_class = HistoryCreateForm
+    success_url = reverse_lazy('home')
 
 
 class HistoryDetailView(DetailView):

@@ -2,9 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 
 from apps.directs.models import Message, Participant, Chat
 from apps.user.models import UserProfile, User
+from apps.common.models import Base
+from django.views.generic import TemplateView
 
 
 # Create your views here.
@@ -107,3 +110,40 @@ def NewConversation(request, username):
     if from_user != to_user:
         Message.sender_message(from_user, to_user, body)
     return redirect('message')
+
+## socket
+
+@method_decorator(login_required, name='dispatch')
+class MessageView(TemplateView):
+    template_name = "directs/message.html"
+
+    def get(self, request, *args, **kwargs):
+
+        context = self.get_context_data(**kwargs)
+        context['participants'] = Participant.objects.filter(~Q(user=self.request.user),
+                                                             chat__participant__user=self.request.user)
+        context['all_users'] = UserProfile.objects.all().exclude(id=self.request.user.id)
+        try:
+            name = kwargs.get('name')
+            chat = get_object_or_404(Chat, name=name)
+            context['chat'] = chat
+            context['partner'] = Participant.objects.filter(chat=chat).exclude(user=self.request.user).first()
+            messages = chat.messages.all().filter(~Q(sender=self.request.user), is_read=False)
+            for message in messages:
+                message.is_read = True
+                message.save()
+        except Exception as e:
+            context['chat'] = Chat.objects.first()
+        return self.render_to_response(context)
+
+
+def create_chat(request, user_id):
+    chat = Chat.objects.filter(participant__user=request.user).filter(participant__user__id=user_id).distinct()
+    if chat.exists():
+        return redirect(f'/message/chat/{chat.first().name}')
+    else:
+        chat = Chat.objects.create()
+        Participant.objects.create(user_id=user_id, chat=chat)
+        Participant.objects.create(user=request.user, chat=chat)
+
+        return redirect(f'/message/chat/{chat.name}')

@@ -7,7 +7,7 @@ from apps.post.utils import post_upload_path, validate_file_extension, history_u
 
 
 class Post(Base):
-    author = ForeignKey('user.User', CASCADE,"posts")
+    author = ForeignKey('user.User', CASCADE, "posts")
     title = CharField(max_length=128, null=True, blank=True)
 
     class Meta:
@@ -17,9 +17,6 @@ class Post(Base):
     def like_count(self):
         return Like.objects.filter(post_id=self.id).count()
 
-    @property
-    def medias(self):
-        return PostMedia.objects.filter(post_id=self.id)
 
     @property
     def comment_count(self):
@@ -29,7 +26,7 @@ class Post(Base):
 class PostMedia(Model):
     file = FileField(upload_to=post_upload_path, null=False, blank=False,
                      validators=[validate_file_extension, ])
-    post = ForeignKey('post.Post', CASCADE, "post_medias")
+    post = ForeignKey('post.Post', CASCADE, "medias")
 
 
 class Like(Model):
@@ -64,17 +61,17 @@ class Notification(Model):
 
 
 class History(Model):
-    author = ForeignKey('user.User', CASCADE,'histories')
-    seen_by = ManyToManyField('user.User','seen_by', blank=True)
-    file = FileField(validators=[validate_file_extension,], upload_to=history_upload_path)
+    title = CharField(max_length=128, default='history')
+    author = ForeignKey('user.User', CASCADE, 'histories')
+    seen_by = ManyToManyField('user.User', 'seen_by', blank=True)
+    file = FileField(validators=[validate_file_extension, ], upload_to=history_upload_path)
     created_at = DateTimeField(auto_now_add=True)
-
 
     def mark_seen(self, user):
         self.seen_by.add(user)
         self.save()
+
     class Meta:
         db_table = 'history'
         verbose_name = 'History'
         verbose_name_plural = 'Histories'
-

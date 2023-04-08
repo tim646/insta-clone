@@ -7,10 +7,12 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from .forms import UserRegisterForm, UserLoginForm, EditProfileForm
+from django.views.generic import CreateView, DetailView, TemplateView
+from .forms import UserRegisterForm, UserLoginForm
 from django.views.generic import ListView
 from .models import User, Saved, UserProfile
 # Create your views here.
-from ..post.models import Post, PostMedia
+from ..post.models import Post, PostMedia, History
 
 
 class SignUpView(CreateView):
@@ -62,6 +64,24 @@ class SavedPostView(LoginRequiredMixin, ListView):
         return context
 
 
+class UserDetailView(LoginRequiredMixin, TemplateView):
+    template_name = 'user.html'
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        posts = Post.objects.filter(author=user)
+        followers_count = user.followers.count()
+        following_count = user.followings.count()
+        history = History.objects.filter(author = user)
+        context['user'] = user
+        context['followers_count'] = followers_count
+        context['followings_count'] = following_count
+        context["posts"] = posts
+        context["histories"] = history
+        return context
+
+
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'myprofile.html'
 
@@ -90,6 +110,7 @@ def follow(request, pk):
         user.follow(user_to_follow)
         return redirect('profile')
     return redirect('home')
+
 
 @login_required
 def unfollow(request, pk):

@@ -20,6 +20,9 @@
                     {#            <p class="card-text">{{ post.caption }}</p>#}
                     {#          </div>#}
                 </div>
+                <p class="card-text"><strong>Date:</strong> {{ post.created_at }}</p>
+                <p class="card-text"><strong>Like:</strong> {{ post.like_count }} </p>
+
 
                 <div class="mt-4">
                     <h5 class="mb-3">{{ post.comments.count }} Comments</h5>
