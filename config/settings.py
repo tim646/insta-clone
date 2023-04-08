@@ -28,7 +28,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 DJANGO_APPS = [
-
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +45,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+
     'crispy_forms',
     'captcha',
     'django_extensions',
@@ -177,3 +178,12 @@ RECAPTCHA_PUBLIC_KEY = env.str("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = env.str("RECAPTCHA_PRIVATE_KEY")
 
 RECAPTCHA_VERIFY_REQUEST_TIMEOUT = 10
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# Daphne
+ASGI_APPLICATION = "config.asgi.application"
