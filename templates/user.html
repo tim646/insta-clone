@@ -9,74 +9,73 @@
     <div class="content">
         <div class="userInfo">
             <div class="followers">
-                <img src="{% static '/assets/Profile-Pic.svg' %}" alt="">
+                <img src="{{ user.image.url }}" style="border-radius: 100%" alt="">
                 <div class="text">
                     <div class="first">
-                        <p>terrylucas</p>
+                        <p>{{ user.username }}</p>
                         <button>Follow</button>
                         <img src="{% static '/assets/Icons/More.svg' %}" alt="">
                     </div>
                     <div class="second">
-                        <p>1.258 posts</p>
-                        <p>4M followers</p>
-                        <p>1.250 following </p>
+                        <p>{{ posts.all.count }} posts</p>
+                        <p>{{ followers_count }} followers</p>
+                        <p>{{ followings_count }} following </p>
                     </div>
                     <div class="third">
-                        <p>Terry Lucas</p>
+                         <p>{{ user.first_name }} {{ user.last_name }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="aktual">
+                {% for history in histories %}
                 <div class="ak1">
-                    <img src="{% static '/assets/secondary/Profile-Pic (1).svg' %}" alt="">
-                    <p>Made Us</p>
+                    <a href="{% url 'hisrtory-detail' history.id%}">
+                    <img src="{{ history.file.url }}" alt="" style="border-radius: 100%; height: 60px; width: 60px">
+                    </a>
+                    <p>{{ history.title }}</p>
                 </div>
-                <div class="ak1">
-                    <img src="{% static '/assets/secondary/Profile-Pic (3).svg' %}" alt="">
-                    <p>Lorem ...</p>
-                </div>
-                <div class="ak1">
-                    <img src="{% static '/assets/secondary/Profile-Pic (4).svg' %}" alt="">
-                    <p>Lorem ...</p>
-                </div>
-                <div class="ak1">
-                    <img src="{% static '/assets/secondary/Profile-Pic (5).svg' %}" alt="">
-                    <p>Lorem ...</p>
-                </div>
+                {% endfor %}
+
             </div>
         </div>
 
-        <div class="userpost">
-            <div class="info">
-                <div class="txt">
-                    <img src="{% static '/assets/Icons/Posts.svg' %}" alt="">
-                    <p>POSTS</p>
-                </div>
-                <div class="txt2">
-                    <img src="{% static '/assets/Icons/Guides.svg' %}" alt="">
-                    <p>GUIDES</p>
-                </div>
-                <div class="txt2">
-                    <img src="{% static '/assets/Icons/Reels.svg' %}" alt="">
-                    <p>REELS</p>
-                </div>
-                <div class="txt2">
-                    <img src="{% static '/assets/Icons/Videos-2.svg' %}" alt="">
-                    <p>VIDEOS</p>
-                </div>
-                <div class="txt2 ">
-                    <img src="{% static '/assets/Icons/Tagged.svg' %}" alt="">
-                    <p>TAGGED</p>
-                </div>
-            </div>
+
+{#        <div class="userpost">#}
+{#            <div class="info">#}
+{#                <div class="txt">#}
+{#                    <img src="{% static '/assets/Icons/Posts.svg' %}" alt="">#}
+{#                    <p>POSTS</p>#}
+{#                </div>#}
+{#                <div class="txt2">#}
+{#                    <img src="{% static '/assets/Icons/Guides.svg' %}" alt="">#}
+{#                    <p>GUIDES</p>#}
+{#                </div>#}
+{#                <div class="txt2">#}
+{#                    <img src="{% static '/assets/Icons/Reels.svg' %}" alt="">#}
+{#                    <p>REELS</p>#}
+{#                </div>#}
+{#                <div class="txt2">#}
+{#                    <img src="{% static '/assets/Icons/Videos-2.svg' %}" alt="">#}
+{#                    <p>VIDEOS</p>#}
+{#                </div>#}
+{#                <div class="txt2 ">#}
+{#                    <img src="{% static '/assets/Icons/Tagged.svg' %}" alt="">#}
+{#                    <p>TAGGED</p>#}
+{#                </div>#}
+{#            </div>#}
+        <h2>{{ user.username|title }} Posts</h2>
             <div class="post">
-                <div><img src="{% static '/assets/User-Profile/Small-Post.svg' %}" alt=""></div>
-                <div><img src="{% static '/assets/User-Profile/Small-Post-1.svg' %}" alt=""></div>
-                <div><img src="{% static '/assets/User-Profile/Small-Post-2.svg' %}" alt=""></div>
-                <div><img src="{% static '/assets/User-Profile/Small-Post-3.svg' %}" alt=""></div>
-                <div><img src="{% static '/assets/User-Profile/Small-Post-4.svg' %}" alt=""></div>
-                <div><img src="{% static '/assets/User-Profile/Small-Post-5.svg' %}" alt=""></div>
+                {% for post in posts %}
+                    {% for media in post.medias.all %}
+                        <div>
+                            <a href="{% url 'post-detail' post.id %}">
+                            <img src="{{ media.file.url }}" alt="">
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                
             </div>
         </div>
     </div>

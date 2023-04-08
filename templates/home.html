@@ -14,6 +14,7 @@
     <div class="app">
         <div class="elements">
             <div class="story">
+                <button class="history-button">+</button>
                 {% for history in histories %}
                     <div class="my">
                         <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
@@ -38,7 +39,7 @@
                 </div>
                 {% for media in  post.medias.all %}
                     {% if media.file|check_is_mp4 %}
-                        <div class="post">
+                        <div class="post" >
                             <video controls style="width: 48%">
                                 <source src="{{ media.file.url }}" type="video/mp4">
                             </video>
@@ -64,8 +65,7 @@
                         </div>
                         <div>
                             <a href="{% url 'post-save' post.id %}">
-                                <img src="{% static '/assets/Icons/Save.svg' %}" {% if post|check_post_saved:user %}
-                                     style="background-color: black" {% endif %} alt="">
+                                <img src="{% static '/assets/Icons/Save.svg' %}" {% if post|check_post_saved:user %} style="background-color: black" {% endif %} alt="">
                             </a>
                         </div>
                     </div>
@@ -78,9 +78,7 @@
                             <p>{{ post.title }}</p>
                             <span>...more</span>
                         </div>
-                        <div class="bottomcom"><span><a
-                                href="{% url 'post-detail' post.id %}">View all</a> {{ post.comment_count }} comments</span>
-                        </div>
+                        <div class="bottomcom"><span><a href="{% url 'post-detail' post.id %}">View all</a> {{ post.comment_count }} comments</span></div>
                     </div>
                     <div class="time"><span>{{ post.created_at|timesince }}  ago </span></div>
                     <form action="{% url 'add-comment' post.id %}" enctype="multipart/form-data" , method="post">
@@ -95,7 +93,6 @@
                     </form>
 
                 </div>
-
 
             {% endfor %}
         </div>
@@ -119,8 +116,8 @@
                 <div class="follow">
                     <img src="{{ sug.image.url }}" style="border-radius: 50%; width: 15%" alt="">
                     <div class="texx">
-                        <a id="text-decor-none" href="{% url 'user-posts' sug.username %}">{{ sug.username }}</a>
-                        <span>Followed by {{ sug.followers.first }}</span>
+                        <a id="text-decor-none" href="{% url 'user-posts' sug.username  %}">{{ sug.username }}</a>
+                        <span>Followed by {{ sug.followers.first}}</span>
                     </div>
                     <p class="blue">follow</p>
                 </div>
