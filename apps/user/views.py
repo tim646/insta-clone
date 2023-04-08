@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -65,7 +66,7 @@ class SavedPostView(LoginRequiredMixin, ListView):
 
 
 class UserDetailView(LoginRequiredMixin, TemplateView):
-    template_name = 'user.html'
+    template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
@@ -73,17 +74,19 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
         posts = Post.objects.filter(author=user)
         followers_count = user.followers.count()
         following_count = user.followings.count()
+        is_following = user.followers.filter(id=self.request.user.id).exists()
         history = History.objects.filter(author = user)
         context['user'] = user
         context['followers_count'] = followers_count
         context['followings_count'] = following_count
         context["posts"] = posts
         context["histories"] = history
+        context["is_following"] = is_following
         return context
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'myprofile.html'
+    template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -108,7 +111,7 @@ def follow(request, pk):
         user_to_follow = User.objects.get(pk=pk)
         print(user_to_follow)
         user.follow(user_to_follow)
-        return redirect('profile')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     return redirect('home')
 
 
@@ -119,10 +122,8 @@ def unfollow(request, pk):
         user_to_follow = User.objects.get(pk=pk)
         print(user_to_follow)
         user.unfollow(user_to_follow)
-        return redirect('profile')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     return redirect('home')
-
-
 
 
 def edit_profile(request):

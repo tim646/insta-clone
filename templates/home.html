@@ -124,10 +124,6 @@
                       {% csrf_token %}
                       <button type="submit" class="blue">Follow</button>
                         </form>
-                    <form method="POST" action="{% url 'unfollow' sug.id %}">
-                      {% csrf_token %}
-                      <button type="submit" class="blue">UnFollow</button>
-                        </form>
 
 
                 </div>

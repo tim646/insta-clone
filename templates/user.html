@@ -13,7 +13,17 @@
                 <div class="text">
                     <div class="first">
                         <p>{{ user.username }}</p>
-                        <button>Follow</button>
+                        {% if is_following %}
+                        <form action="{% url 'unfollow' user.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form action="{% url 'follow' user.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">Follow</button>
+                        </form>
+                        {% endif %}
                         <img src="{% static '/assets/Icons/More.svg' %}" alt="">
                     </div>
                     <div class="second">

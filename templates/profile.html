@@ -1,0 +1,8 @@
+
+{% block content %}
+  {% if user != request.user %}
+    {% include 'user.html' %}
+  {% else %}
+    {% include 'myprofile.html' %}
+  {% endif %}
+{% endblock %}
