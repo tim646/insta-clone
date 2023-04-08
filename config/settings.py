@@ -1,4 +1,3 @@
-
 # For more information on this file, see
 # https://docs.djangoproject.com/en/4.1/topics/settings/
 
@@ -29,7 +28,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 DJANGO_APPS = [
-
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +45,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+
     'crispy_forms',
     'captcha',
     'django_extensions',
@@ -68,7 +68,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -80,7 +79,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
 
 TEMPLATES = [
     {
@@ -130,7 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
@@ -141,7 +138,6 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -182,3 +178,12 @@ RECAPTCHA_PUBLIC_KEY = env.str("RECAPTCHA_PUBLIC_KEY")
 RECAPTCHA_PRIVATE_KEY = env.str("RECAPTCHA_PRIVATE_KEY")
 
 RECAPTCHA_VERIFY_REQUEST_TIMEOUT = 10
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
+# Daphne
+ASGI_APPLICATION = "config.asgi.application"

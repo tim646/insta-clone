@@ -16,18 +16,18 @@
             <div class="story">
                 <button class="history-button">+</button>
                 {% for history in histories %}
-                <div class="my">
-                    <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
-                    <img src="{{ history.author.image.url }}" style="border-radius: 100%;" alt="">
-                    {% if user == history.author %}
-                        <p>my story</p>
-                    {% else %}
-                        <p>{{ history.author }}</p>
-                    {% endif %}
-                    </a>
-                </div>
+                    <div class="my">
+                        <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
+                            <img src="{{ history.author.image.url }}" style="border-radius: 100%;" alt="">
+                            {% if user == history.author %}
+                                <p>my story</p>
+                            {% else %}
+                                <p>{{ history.author }}</p>
+                            {% endif %}
+                        </a>
+                    </div>
                 {% endfor %}
-{#                <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">#}
+                {#                <img class="btn" src="{% static '/assets/storys/Story-Button.svg' %}" alt="">#}
             </div>
             {% for post in posts %}
                 <div class="info">
@@ -116,8 +116,8 @@
                 <div class="follow">
                     <img src="{{ sug.image.url }}" style="border-radius: 50%; width: 15%" alt="">
                     <div class="texx">
-                        <a id="text-decor-none" href="{% url 'user-profile' sug.username  %}">{{ sug.username }}</a>
-                        <span>Followed by {{ sug.followers.first}sugg}</span>
+                        <a id="text-decor-none" href="{% url 'user-posts' sug.username  %}">{{ sug.username }}</a>
+                        <span>Followed by {{ sug.followers.first}}</span>
                     </div>
                     <p class="blue">follow</p>
                 </div>
