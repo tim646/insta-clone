@@ -1,4 +1,5 @@
 {% load static %}
+{% load is_mp4 %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +22,11 @@
         <div class="card">
           <div class="card-header">
             <h1 class="card-title">History Entry</h1>
-              <img src="{{ history.file.url }}" alt="">
+                {% if history.file|check_is_mp4 %}
+                     <video src="{{ history.file.url }}" class="w-100" controls></video>
+                {% else %}
+                    <img src="{{ history.file.url }}" class="w-100" alt="Image">
+                {% endif %}
           </div>
           <div class="card-body">
             <p class="card-text"><strong>Date:</strong> {{ history.created_at }}</p>

@@ -17,9 +17,6 @@ class Post(Base):
     def like_count(self):
         return Like.objects.filter(post_id=self.id).count()
 
-    @property
-    def medias(self):
-        return PostMedia.objects.filter(post_id=self.id)
 
     @property
     def comment_count(self):
@@ -29,7 +26,7 @@ class Post(Base):
 class PostMedia(Model):
     file = FileField(upload_to=post_upload_path, null=False, blank=False,
                      validators=[validate_file_extension, ])
-    post = ForeignKey('post.Post', CASCADE, "post_medias")
+    post = ForeignKey('post.Post', CASCADE, "medias")
 
 
 class Like(Model):
