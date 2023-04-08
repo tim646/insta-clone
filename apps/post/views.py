@@ -105,9 +105,13 @@ class PostSaveView(LoginRequiredMixin, View):
 
 class HistoryCeateView(CreateView):
     model = History
-    fields = ['file', ]
+    template_name = 'history_create.html'
     form_class = HistoryCreateForm
     success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 class HistoryDetailView(DetailView):

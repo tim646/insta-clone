@@ -16,7 +16,7 @@ PostMediaFormSet = inlineformset_factory(Post, PostMedia, fields=['file'], extra
 class HistoryCreateForm(ModelForm):
     class Meta:
         model = History
-        fields = ['file']
+        fields = ['file', 'title']
         widgets = {
             'file': ClearableFileInput(attrs={'multiple': True}),
         }

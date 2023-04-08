@@ -1,10 +1,10 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from .forms import UserRegisterForm, UserLoginForm, EditProfileForm
@@ -13,7 +13,7 @@ from .forms import UserRegisterForm, UserLoginForm
 from django.views.generic import ListView
 from .models import User, Saved, UserProfile
 # Create your views here.
-from ..post.models import Post, PostMedia, History
+from ..post.models import Post, History
 
 
 class SignUpView(CreateView):
@@ -49,6 +49,7 @@ class SavedPostView(LoginRequiredMixin, ListView):
     template_name = 'saved.html'
     model = Saved
     context_object_name = 'saved'
+
     def get_queryset(self):
         self.user = get_object_or_404(User, username=self.kwargs.get('username'))
         saved = Saved.objects.filter(user=self.user)
@@ -66,7 +67,7 @@ class SavedPostView(LoginRequiredMixin, ListView):
 
 
 class UserDetailView(LoginRequiredMixin, TemplateView):
-    template_name = 'profile.html'
+    template_name = 'user.html'
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)

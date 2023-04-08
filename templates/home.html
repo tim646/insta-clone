@@ -14,7 +14,9 @@
     <div class="app">
         <div class="elements">
             <div class="story">
+                <a href="{% url 'hisrtory-create'%}">
                 <button class="history-button">+</button>
+                </a>
                 {% for history in histories %}
                     <div class="my">
                         <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">

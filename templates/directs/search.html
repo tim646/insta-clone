@@ -19,14 +19,14 @@
 
   <div id="wrapper">
     <div class="container">
-      <div class="phone-app-demo"></div>
+      <div class="phone-app-ddemo"></div>
       <div class="form-data">
-        
+
         <form action="" method="GET">
-            <div class="header__search">
+            <div class="headedr__search">
                 <input type="text" placeholder="Search" name="q" value="{{ request.GET.q }}">
                 <button class="btn btn-primary" type="submit">Search</button>
-                
+
             </div>
         </form>
 
@@ -37,7 +37,8 @@
 
         {% for user in users %}
             <div class="side-menu__user-profile" style="text-align: start; border: solid rgba(192, 192, 192, 0.514) 1px; padding: 10px; border-radius: 25px;">
-                <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar">
+{#                <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar">#}
+                <a href="{% url 'profile' %}" class="side-menu__user-avatar">
                     {% if user.image.url %}
                     <img src="{{ user.image.url }}" alt="User Picture">
                     {% else %}
@@ -45,26 +46,26 @@
 
                     {% endif %}
                 </a>
-                <div class="side-menu__user-idnfo">
+                <div class="side-menu__user-info">
                     {% if user.profile.first_name %}
-                    <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{user.profile.first_name|title }} {{user.profile.last_name|title }}</a>
+                    <a href="{% url 'profile' %}" style="font-size: 15px; color: black; text-align: center;">{{user.profile.first_name|title }} {{user.profile.last_name|title }}</a>
                     {% else%}
-                    <a href="{% url 'profile' user.username %}">Instagram User</a>
+                    <a href="{% url 'profile' %}">Instagram User</a>
 
                     {% endif %}
                     <br>
                     <span style="font-size: 14px;">@{{user.username}}</span>
                     <br>
-                    <a href="{% url 'profile' user.username %}" style="color: blue;" class="side-menu__user-button">View Profile</a>
+                    <a href="{% url 'profile' %}" style="color: blue;" class="side-menu__user-button">View Profile</a>
 
                 </div>
             </div>
             <!-- <hr> -->
         {% endfor %}
-        
-          
+
+
         </form>
-        
+
       </div>
     </div>
 
