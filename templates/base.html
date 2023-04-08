@@ -21,7 +21,7 @@
         <div class="logo"><img src="{% static '/assets/Icons/Logo.svg' %}" alt=""></div>
         <div class="search"><input type="search" placeholder="search"></div>
         <div class="menu">
-            <button type="submit"><img src="{% static '/assets/Icons/Home-fill.svg' %}" alt=""></button>
+            <a href="{% url 'home' %}"><img src="{% static '/assets/Icons/Home-fill.svg' %}" alt=""></a>
             <a href="{% url 'message' user.id %}">
                 <img src="{% static '/assets/Icons/Messenger.svg' %}" alt="">
             </a>
