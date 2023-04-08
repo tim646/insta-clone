@@ -1,16 +1,17 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, TemplateView
-from .forms import UserRegisterForm, UserLoginForm
+from django.views.generic import CreateView, TemplateView
 from django.views.generic import ListView
+
+from .forms import UserRegisterForm, UserLoginForm
 from .models import User, Saved
 # Create your views here.
-from ..post.models import Post, PostMedia, History
+from ..post.models import Post, History
 
 
 class SignUpView(CreateView):
@@ -46,19 +47,20 @@ class SavedPostView(LoginRequiredMixin, ListView):
     template_name = 'saved.html'
     model = Saved
     context_object_name = 'saved'
+
     def get_queryset(self):
         self.user = get_object_or_404(User, username=self.kwargs.get('username'))
         saved = Saved.objects.filter(user=self.user)
         return saved
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context =  super().get_context_data(object_list=object_list, **kwargs)
+        context = super().get_context_data(object_list=object_list, **kwargs)
         followers_count = self.user.followers.count()
         following_count = self.user.followings.count()
         post_count = self.user.posts.count()
         context['followers_count'] = followers_count
-        context['followings_count']= following_count
-        context['post_count']= post_count
+        context['followings_count'] = following_count
+        context['post_count'] = post_count
         return context
 
 
@@ -66,12 +68,12 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'user.html'
 
     def get_context_data(self, **kwargs):
-        context =  super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         posts = Post.objects.filter(author=user)
         followers_count = user.followers.count()
         following_count = user.followings.count()
-        history = History.objects.filter(author = user)
+        history = History.objects.filter(author=user)
         context['user'] = user
         context['followers_count'] = followers_count
         context['followings_count'] = following_count
@@ -81,10 +83,9 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
 
 
 def profile(request):
-
     user = User.objects.get(username=request.user.username)
     followers_count = user.followers.count()  # get the number of followers for user
-    following_count  = user.followings.count()
+    following_count = user.followings.count()
     user_posts = Post.objects.filter(author=user)
     post_count = user_posts.count()
     suggested_followers = User.objects.exclude(id=request.user.id).exclude(id__in=request.user.followings.all())
