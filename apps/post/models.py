@@ -7,7 +7,7 @@ from apps.post.utils import post_upload_path, validate_file_extension, history_u
 
 
 class Post(Base):
-    author = ForeignKey('user.User', CASCADE,"posts")
+    author = ForeignKey('user.User', CASCADE, "posts")
     title = CharField(max_length=128, null=True, blank=True)
 
     class Meta:
@@ -64,17 +64,17 @@ class Notification(Model):
 
 
 class History(Model):
-    author = ForeignKey('user.User', CASCADE,'histories')
-    seen_by = ManyToManyField('user.User','seen_by', blank=True)
-    file = FileField(validators=[validate_file_extension,], upload_to=history_upload_path)
+    title = CharField(max_length=128, default='history')
+    author = ForeignKey('user.User', CASCADE, 'histories')
+    seen_by = ManyToManyField('user.User', 'seen_by', blank=True)
+    file = FileField(validators=[validate_file_extension, ], upload_to=history_upload_path)
     created_at = DateTimeField(auto_now_add=True)
-
 
     def mark_seen(self, user):
         self.seen_by.add(user)
         self.save()
+
     class Meta:
         db_table = 'history'
         verbose_name = 'History'
         verbose_name_plural = 'Histories'
-

@@ -14,6 +14,7 @@
     <div class="app">
         <div class="elements">
             <div class="story">
+                <button class="history-button">+</button>
                 {% for history in histories %}
                 <div class="my">
                     <a href="{% url 'hisrtory-detail' history.id %}" style="text-decoration: none">
@@ -115,8 +116,8 @@
                 <div class="follow">
                     <img src="{{ sug.image.url }}" style="border-radius: 50%; width: 15%" alt="">
                     <div class="texx">
-                        <a id="text-decor-none" href="{% url 'user-posts' sug.username  %}">{{ sug.username }}</a>
-                        <span>Followed by {{ sug.followers.first}}</span>
+                        <a id="text-decor-none" href="{% url 'user-profile' sug.username  %}">{{ sug.username }}</a>
+                        <span>Followed by {{ sug.followers.first}sugg}</span>
                     </div>
                     <p class="blue">follow</p>
                 </div>
