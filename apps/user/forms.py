@@ -39,21 +39,29 @@ class UserLoginForm(AuthenticationForm):
 
 
 class EditProfileForm(forms.ModelForm):
-    image = forms.ImageField(required=True)
+    user_image = forms.ImageField(required=False)
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'First Name'}), required=True)
+        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'First Name'}))
     last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Last Name'}), required=True)
+        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Last Name'}))
     bio = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Bio'}), required=True)
+        widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Bio'}))
     url = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'URL'}), required=True)
+        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'URL'}))
     location = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Address'}), required=True)
+        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Address'}))
 
     class Meta:
         model = UserProfile
-        fields = ['image', 'first_name', 'last_name', 'bio', 'url', 'location']
+        fields = ['first_name', 'last_name', 'bio', 'url', 'location']
+
+    def save(self, commit=True):
+        user_profile = super().save(commit=False)
+        user_profile.image = self.cleaned_data['user_image']
+        if commit:
+            user_profile.save()
+            user_profile.user.save()
+        return user_profile
 
 
 class UserRegisterForm(UserCreationForm, SignupForm):

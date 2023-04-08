@@ -1,7 +1,7 @@
 {% load static %}
 {% load is_mp4 %}
 {% block style %}
-    <link rel="stylesheet" href="{%  static 'myprofile.css' %}"">
+    <link rel="stylesheet" href="{%  static 'myprofile.css' %}">
 {% endblock %}
 {% block content %}
         <div class="content">
@@ -10,7 +10,7 @@
                 <div class="text">
                     <div class="first">
                         <p>{{user.username}}</p>
-                        <button>Edit Profile</button>
+                        <button><a href="{% url 'edit_profile' %}"> Edit Profile</a></button>
                         <a href="{% url 'home' %}">
                         <img src="{% static '/assets/Icons/Options.svg' %}" alt="">
                         </a>

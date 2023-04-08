@@ -5,10 +5,10 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from .forms import UserRegisterForm, UserLoginForm
+from django.views.generic import CreateView, TemplateView
+from .forms import UserRegisterForm, UserLoginForm, EditProfileForm
 from django.views.generic import ListView
-from .models import User, Saved
+from .models import User, Saved, UserProfile
 # Create your views here.
 from ..post.models import Post, PostMedia
 
@@ -53,44 +53,65 @@ class SavedPostView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context =  super().get_context_data(object_list=object_list, **kwargs)
-        followers_count = self.user.followers.count()
-        following_count = self.user.followings.count()
+        followers_count = self.user.profile.followers.count()
+        followings_count = self.user.followings.count()
         post_count = self.user.posts.count()
         context['followers_count'] = followers_count
-        context['followings_count']= following_count
+        context['followings_count']= followings_count
         context['post_count']= post_count
         return context
 
 
-def profile(request):
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'myprofile.html'
 
-    user = User.objects.get(username=request.user.username)
-    followers_count = user.followers.count()  # get the number of followers for user
-    following_count  = user.followings.count()
-    user_posts = Post.objects.filter(author=user)
-    post_count = user_posts.count()
-    suggested_followers = User.objects.exclude(id=request.user.id).exclude(id__in=request.user.followings.all())
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(username=self.request.user.username)
+        followers_count = user.followers.count()
+        followings_count = user.followings.count() # get the number of followers for user
 
-    context = {'user': user, 'followers_count': followers_count, 'followings_count': following_count,
-               'post_count': post_count, 'user_posts': user_posts, 'suggested_followers': suggested_followers}
-    return render(request, 'myprofile.html', context)
+        posts = Post.objects.filter(author=user)
+        post_count = posts.count()
+        context['user'] = user
+        context['followers_count'] = followers_count
+        context['followings_count'] = followings_count
+        context['post_count'] = post_count
+        context['user_posts'] = posts
+        return context
 
 
 @login_required
 def follow(request, pk):
     if request.method == 'POST':
-        user = request.user
+        user = UserProfile.objects.get(user_id=request.user.id)
         user_to_follow = User.objects.get(pk=pk)
-        request.user.userprofile.follow(user_to_follow)
-        return redirect('profile', pk=pk)
+        print(user_to_follow)
+        user.follow(user_to_follow)
+        return redirect('profile')
     return redirect('home')
-
 
 @login_required
 def unfollow(request, pk):
     if request.method == 'POST':
-        user = request.user
-        user_to_unfollow = User.objects.get(pk=pk)
-        request.user.userprofile.follow(user_to_unfollow)
-        return redirect('profile', pk=pk)
+        user = UserProfile.objects.get(user_id=request.user.id)
+        user_to_follow = User.objects.get(pk=pk)
+        print(user_to_follow)
+        user.unfollow(user_to_follow)
+        return redirect('profile')
     return redirect('home')
+
+
+
+
+def edit_profile(request):
+    user_profile = request.user
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = EditProfileForm(instance=user_profile)
+
+    return render(request, 'edit_profile.html', {'form': form})

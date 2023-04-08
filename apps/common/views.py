@@ -11,11 +11,11 @@ class HomeView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         posts = Post.objects.all().exclude(author=self.request.user)
-        suggestesion = User.objects.exclude(id=self.request.user.id).exclude(id__in=self.request.user.followings.all())
+        suggestion = User.objects.exclude(id=self.request.user.id)
         histories = History.objects.order_by( 'author_id', '-created_at')
         ntcs = Notification.objects.filter(user=self.request.user, is_seen=False).count()
         context["posts"] = posts
-        context["suggestion"] = suggestesion
+        context["suggestion"] = suggestion
         context["histories"] = histories
         context["ntcs"] = ntcs
         return context

@@ -117,8 +117,18 @@
                     <div class="texx">
                         <a id="text-decor-none" href="{% url 'user-posts' sug.username  %}">{{ sug.username }}</a>
                         <span>Followed by {{ sug.followers.first}}</span>
+
                     </div>
-                    <p class="blue">follow</p>
+                    <form method="POST" action="{% url 'follow' sug.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="blue">Follow</button>
+                        </form>
+                    <form method="POST" action="{% url 'unfollow' sug.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="blue">UnFollow</button>
+                        </form>
+
+
                 </div>
             {% endfor %}
 
