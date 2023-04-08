@@ -9,7 +9,9 @@ class PostCreateForm(ModelForm):
         model = Post
         fields = ['title']
 
+
 PostMediaFormSet = inlineformset_factory(Post, PostMedia, fields=['file'], extra=1)
+
 
 class HistoryCreateForm(ModelForm):
     class Meta:

@@ -1,10 +1,11 @@
 from django.urls import path, include
 
+from apps.post.models import Notification
 from apps.post.views import PostCreateView, UserPostListView, PressLikeView, CommentCreateView, PostDetailView, \
-    PostSaveView, HistoryDetailView
+    PostSaveView, HistoryDetailView, NotificationListView
 
 urlpatterns = [
-
+    path('notifications/', NotificationListView.as_view(),name='notifications'),
     path('post-create/',PostCreateView.as_view(), name='post-create'),
     path('<int:pk>/', PostDetailView.as_view(), name="post-detail"),
     path('<str:username>/', UserPostListView.as_view(), name="user-posts"),
