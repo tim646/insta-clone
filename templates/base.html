@@ -14,7 +14,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 </head>
-
+<style>
+    header {
+  width: 100%;
+}
+    header .menu a {
+  padding: 5px;
+  margin-right: 10px;
+}
+</style>
 <body>
     <!-- START HEADER -->
     <header>
@@ -28,6 +36,7 @@
             <a href="{% url 'post-create' %}">
             <img src="{% static '/assets/Icons/NewPosts.svg' %}" alt="">
             </a>
+
             <a href="#">
                 <img src="{% static '/assets/Icons/FindPeople.svg'%}" alt="">
             </a>
@@ -35,10 +44,13 @@
                 <img src="{% static '/assets/Icons/Menu-Button-Item.svg' %}" alt="">
             </a>
             <a href="{% url 'profile' %}">
-                <img  src="{{ user.image.url }}" alt="" style="border-radius: 50%; width: 100%;   object-fit: cover;">
+                <img  src="{{ user.image.url }}" alt="" style="border-radius: 50%; max-width: 35px;   object-fit: cover;">
             </a>
-
+                        <a href="{% url 'logout' %}">
+               logout
+            </a>
         </div>
+
     </header>
     <!-- FINISH HEADER -->
     <div class="border"></div>
