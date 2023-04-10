@@ -16,7 +16,7 @@ class UserLoginForm(AuthenticationForm):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': 'input', 'placeholder': 'Password'}))
-    # captcha = ReCaptchaField()
+    captcha = ReCaptchaField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -25,13 +25,13 @@ class UserLoginForm(AuthenticationForm):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         password = cleaned_data.get('password')
-        # captcha_response = cleaned_data.get('captcha')
+        captcha_response = cleaned_data.get('captcha')
         user = authenticate(username=username, password=password)
         if not user:
             raise forms.ValidationError('Invalid username or password', code='invalid_login')
-        # if not captcha_response:
-        #     raise forms.ValidationError('Error verifying reCAPTCHA, please try again', code='invalid_captcha')
-        # return self.cleaned_data
+        if not captcha_response:
+            raise forms.ValidationError('Error verifying reCAPTCHA, please try again', code='invalid_captcha')
+        return self.cleaned_data
 
     class Meta:
         model = User
