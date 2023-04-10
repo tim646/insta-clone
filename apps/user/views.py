@@ -145,3 +145,16 @@ def edit_profile(request):
         form = EditProfileForm(instance=user_profile)
 
     return render(request, 'edit_profile.html', {'form': form})
+
+
+@login_required
+def show_followings(request, username):
+    user = get_object_or_404(User, username=username)
+    followings = user.followings.all()
+    return render(request, 'followings_list.html', {'followings': followings})
+
+@login_required
+def show_followers(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = user.followers.all()
+    return render(request, 'followers_list.html', {'followers': followers})

@@ -18,8 +18,8 @@
                     </div>
                     <div class="second">
                         <p>{{post_count}} posts</p>
-                        <p>{{followers_count}} followers</p>
-                        <p>{{followings_count}} following </p>
+                        <p>{{followers_count}} <a href="{% url 'show_followers' user.username %}">followers</a></p>
+                        <p>{{followings_count}} <a href="{% url 'show_followings' user.username %}">following</a> </p>
                     </div>
                     <div class="third">
                         <p>{{user.first_name}} {{user.last_name}}</p>

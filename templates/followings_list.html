@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <title>Followings</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+    }
+    .button {
+  background-color: #575c80; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+    .btn:hover {
+      background-color: #666;
+    }
+    </style>
+</head>
+<body>
+    <br>
+
+ <div class="container">
+   <a href="{% url 'profile' %}" class="button"><-Back to Profile</a>
+    <a href="{% url 'home' %}" class="button"><- Home</a>
+    <h1>Followings</h1>
+    <hr>
+    <div class="row">
+      {% for following in followings %}
+        <div class="col-md-3">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <img src="{{ following.image.url }}" alt="{{ following.username }}'s Profile Picture" class="rounded-circle" height="50" width="50">
+                <a href="{% url 'user-profile' following.username %}" class="ml-2">{{ following.username }}</a>
+              </div>
+              <form method="post" action="{% url 'unfollow' following.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-sm mt-2">Unfollow</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p>No followings yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

@@ -72,17 +72,16 @@
     .file-input span {
       margin-left: 10px;
     }
-    .btn {
-      background-color: #333;
-      border: none;
-      border-radius: 3px;
-      color: #fff;
-      cursor: pointer;
-      display: inline-block;
-      font-size: 1.2rem;
-      padding: 10px 20px;
-      transition: background-color 0.3s ease;
-    }
+ .button {
+  background-color: #575c80; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
     .btn:hover {
       background-color: #666;
     }
@@ -92,7 +91,8 @@
   <header>
   <h1>Edit Profile</h1>
   </header>
-
+    <br>
+  <a href="{% url 'profile' %}" class="button"><-Back to Profile</a>
   <div class="container">
 
   <img style="max-width: 200px;" src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile picture">
@@ -123,7 +123,7 @@
       {{ form.image }}
     </div>
      <br>
-    <button type="submit" class="btn btn-primary">Save changes</button>
+    <button type="submit" class="button" style="background-color: #338d48">Save changes</button>
   </form>
 
     </div>
