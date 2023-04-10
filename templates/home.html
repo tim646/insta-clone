@@ -35,7 +35,7 @@
                 <div class="info">
                     <div class="foto">
                         <img src="{{ post.author.image.url }}" style="border-radius: 50%; width: 15%" alt="">
-                        <a href="{% url 'user-posts' post.author.username %}"><p>{{ post.author }}</p></a>
+                        <a href="{% url 'user-profile' post.author.username %}"><p>{{ post.author }}</p></a>
                     </div>
                     <div class="more"><img src="{% static '/assets/Icons/More.svg' %}" alt=""></div>
                 </div>

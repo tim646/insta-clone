@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static%}
+{% load get_notification %}
 {% block style %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
@@ -9,7 +10,7 @@
     <ul>
     {% for notification in notifications %}
       <li{% if notification.is_seen %} class="seen"{% endif %}>
-        {{ notification.type }} notification received on {{ notification.created_at }}
+          <a href="{% url 'profile' %}">{{ notification.user }}</a> {{ notification.type|get_value }}ed  your post {{ notification.created_at|timesince }} ago
       </li>
     {% endfor %}
     </ul>
