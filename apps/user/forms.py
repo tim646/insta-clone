@@ -39,31 +39,26 @@ class UserLoginForm(AuthenticationForm):
 
 
 class EditProfileForm(forms.ModelForm):
-    user_image = forms.ImageField(required=False)
-    first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'First Name'}))
-    last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Last Name'}))
-    bio = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'input', 'placeholder': 'Bio'}))
-    url = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'URL'}))
-    location = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Address'}))
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class': 'input'}))
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class': 'input'}))
+    bio = forms.CharField(max_length=500, required=False, widget=forms.Textarea(attrs={'class': 'textarea', 'rows': 5}))
+    location = forms.CharField(max_length=30, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class': 'input'}))
+    url = forms.URLField(max_length=200, required=False, help_text='Optional.', widget=forms.TextInput(attrs={'class': 'input'}))
+    image = forms.ImageField(required=False, help_text='Optional.', widget=forms.FileInput(attrs={'class': 'file-input'}))
 
     class Meta:
         model = UserProfile
-        fields = ['first_name', 'last_name', 'bio', 'url', 'location']
+        fields = ('first_name', 'last_name', 'bio', 'location', 'url', 'image')
 
     def save(self, commit=True):
         user_profile = super().save(commit=False)
-        user_profile.image = self.cleaned_data['user_image']
+        # Update the user's image if a new one was uploaded
+        if 'image' in self.changed_data:
+            user_profile.user.image = user_profile.image
+            user_profile.user.save()
         if commit:
             user_profile.save()
-            user_profile.user.save()
         return user_profile
-
-
 class UserRegisterForm(UserCreationForm, SignupForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}), max_length=55,

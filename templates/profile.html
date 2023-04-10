@@ -1,8 +1,7 @@
-
 {% block content %}
-  {% if user != request.user %}
-    {% include 'user.html' %}
-  {% else %}
+  {% if user.id == request.user.id %}
     {% include 'myprofile.html' %}
+  {% else %}
+{% include 'user.html' %}
   {% endif %}
 {% endblock %}
