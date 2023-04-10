@@ -76,11 +76,13 @@ class UserDetailView(LoginRequiredMixin, TemplateView):
         else:
             user = get_object_or_404(User, username=self.kwargs.get('username'))
         posts = Post.objects.filter(author=user)
+        post_count = posts.count()
         followers_count = user.followers.count()
         following_count = user.followings.count()
         is_following = user.followers.filter(id=self.request.user.id).exists()
         history = History.objects.filter(author=user)
         context['user'] = user
+        context['post_count'] = post_count
         context['followers_count'] = followers_count
         context['followings_count'] = following_count
         context["posts"] = posts
