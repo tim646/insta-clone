@@ -11,9 +11,9 @@ class HomeView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         posts = Post.objects.all().exclude(author=self.request.user)
-        suggestion = UserProfile.objects.exclude(user_id=self.request.user.id).exclude(id__in=self.request.user.followings.all())
+        suggestion = User.objects.exclude(id=self.request.user.id).exclude(id__in=self.request.user.followings.all())
         for sug in suggestion:
-            print(sug)
+            print(sug.username)
         histories = History.objects.order_by( 'author_id', '-created_at')
         ntcs = Notification.objects.filter(user=self.request.user, is_seen=False).count()
         context["posts"] = posts
