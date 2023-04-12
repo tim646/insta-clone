@@ -151,12 +151,24 @@ def edit_profile(request):
 
 @login_required
 def show_followings(request, username):
+    requested_user = User.objects.get(id=request.user.id)
+    requested_user_followings = requested_user.followings.all()
+
     user = get_object_or_404(User, username=username)
     followings = user.followings.all()
-    return render(request, 'followings_list.html', {'followings': followings})
+    followings_count = user.followings.count()
+    return render(request, 'followings_list.html', {'followings': followings, 'user': user,
+                                                    'followings_count': followings_count,
+                                                    'requested_user_followings': requested_user_followings})
+
 
 @login_required
 def show_followers(request, username):
+    requested_user = User.objects.get(id=request.user.id)
+    requested_user_followers = requested_user.followers.all()
+    requested_user_followings = requested_user.followings.all()
     user = get_object_or_404(User, username=username)
     followers = user.followers.all()
-    return render(request, 'followers_list.html', {'followers': followers})
+    return render(request, 'followers_list.html', {'followers': followers,
+                                                   'user': user, 'requested_user_followers': requested_user_followers
+                                                   , 'requested_user_followings': requested_user_followings})

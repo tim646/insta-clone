@@ -48,16 +48,26 @@
                 <img src="{{ follower.image.url }}" alt="{{ follower.username }}'s Profile Picture" class="rounded-circle" height="50" width="50">
                 <a href="{% url 'user-profile' follower.username %}" class="ml-2">{{ follower.username }}</a>
               </div>
-              <form method="post" action="{% url 'unfollow' follower.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-secondary btn-sm mt-2">Follow</button>
-              </form>
+            {% if request.user.username == follower.username %}
+                <p>You</p>
+            {% elif follower in requested_user_followings %}
+                <form method="post" action="{% url 'unfollow' follower.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-sm mt-2">Unfollow</button>
+                </form>
+            {% else %}
+                <form method="post" action="{% url 'follow' follower.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-sm mt-2">Follow</button>
+                </form>
+                {% endif %}
             </div>
           </div>
         </div>
       {% empty %}
-        <p>No followers yet.</p>
+        <p>No followings yet.</p>
       {% endfor %}
+
     </div>
   </div>
 </body>
